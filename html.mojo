@@ -59,6 +59,7 @@ struct Html(Writable, Stringable):
     self.font = Font()
     self.lines = List[String]()
     self.lines.append("<!DOCTYPE html>")
+    self.add('<html lang="en">')
 
   fn get_alignment(self, align: Alignment) -> String:
     if align == Alignment.left:
@@ -208,6 +209,7 @@ struct Html(Writable, Stringable):
 
   fn head(mut self):
     self.add("<head>")
+    self.add("<meta charset='utf-8'>")
 
   fn end_table(mut self):
     self.add("</table>")
