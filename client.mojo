@@ -7,7 +7,7 @@ struct Printer(HTTPService):
     var uri = req.uri
     if uri.path == "/":
       return OK(self.get_page_html(), "text/html")
-    if uri.path.endswith(".png"): # == "/earlyspring.png":
+    if uri.path.endswith(".png"):
       return OK(self.get_image(uri.path), "image/png")
     return NotFound(uri.path)
 

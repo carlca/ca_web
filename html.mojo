@@ -198,8 +198,114 @@ struct Html(Writable, Stringable):
   fn end_para(mut self):
     self.add("</p>")
 
+  fn end_row(mut self):
+    self.add("</tr>")
+    self.add("")
+
+  fn end_select(mut self):
+    self.add("</select>")
+
   fn head(mut self):
     self.add("<head>")
+
+  fn end_table(mut self):
+    self.add("</table>")
+
+  fn end_unordered_list(mut self):
+    self.add("</ul>")
+
+  fn end_underline(mut self):
+    self.add("</u>")
+
+  fn form(mut self, name: String, action: String, method: String = "post"):
+    var form_str = String("<form name=")
+    form_str += name
+    form_str += " action="
+    form_str += action
+    form_str += " method="
+    form_str += method
+    form_str += ">"
+    self.add(form_str)
+
+  fn hidden_field(mut self, name: String, value: String):
+    var index = len(self.lines) - 1
+    var rem_item: String
+    while index >= 0:
+      var page_str = self.lines[index]
+      # Create the search string
+      var search_str = String()
+      search_str += '<input type=hidden name="'
+      search_str += name
+      search_str += '"'
+      # Find position of search string in page_str
+      # Note: Mojo might need a custom implementation of string search
+      var hid_pos = page_str.find(search_str)
+      if hid_pos >= 0:
+        rem_item = self.lines.pop(index)
+      index -= 1
+
+    # Add new hidden field
+    var new_field = String()
+    new_field += '<input type=hidden name="'
+    new_field += name
+    new_field += '" value="'
+    new_field += value
+    new_field += '">'
+    self.add(new_field)
+
+  fn radio_option(mut self, name: String, text: String, value: String, checked: Bool):
+    var radio_str = String()
+    radio_str += '<input name="'
+    radio_str += name
+    radio_str += '" type=radio value='
+    radio_str += value
+    radio_str += ' '
+    if checked:
+      radio_str += 'checked '
+    radio_str += '>'
+
+    self.add(radio_str)
+    self.add(text)
+
+  fn href(mut self, url: String,
+          target: String = String(""),
+          on_mouse_over: String = String(""),
+          on_mouse_out: String = String(""),
+          on_mouse_down: String = String(""),
+          on_mouse_up: String = String("")):
+
+      var href_str = String()
+      href_str += '<a href="'
+      href_str += url
+      href_str += '" '
+
+      if len(target) > 0:
+          href_str += 'target="'
+          href_str += target
+          href_str += '" '
+
+      if len(on_mouse_over) > 0:
+          href_str += 'OnMouseOver="'
+          href_str += on_mouse_over
+          href_str += '" '
+
+      if len(on_mouse_out)  > 0:
+          href_str += 'OnMouseOut="'
+          href_str += on_mouse_out
+          href_str += '" '
+
+      if len(on_mouse_down) > 0:
+          href_str += 'OnMouseDown="'
+          href_str += on_mouse_down
+          href_str += '" '
+
+      if len(on_mouse_up) > 0:
+          href_str += 'OnMouseUp="'
+          href_str += on_mouse_up
+          href_str += '" '
+
+      href_str += ">"
+      self.add(href_str)
 
   fn image(mut self, image: String, width: Int = 0, height: Int = 0,
            border: Int = 0, on_click: String = "",
@@ -223,13 +329,13 @@ struct Html(Writable, Stringable):
       img_str += "</a>"
     self.add(img_str)
 
-  fn para(mut self, text: String = ""):
+  fn para(mut self, text: String = "") :
     if text != "":
       self.add("<p>" + text + "</p>")
     else:
       self.add("<p>")
 
-  fn set_font(mut self, typeface: String, size: Int = 0, color_name: String = ""):
+  fn set_font(mut self, typeface: String, size: Int = 0, color_name: String = "", bold: Bool = False):
     var font_str = String("<font ")
     if color_name != "":
       font_str += 'color="' + color_name + '" '
@@ -238,7 +344,79 @@ struct Html(Writable, Stringable):
     if typeface != "":
       font_str += 'face="' + typeface + '" '
     font_str = str(font_str.strip()) + ">"
+    if bold:
+      font_str += "<b>"
+      self.font_bold = True
     self.add(font_str)
+
+  fn row(mut self):
+    self.add("<tr>")
+
+  fn data(mut self, width: Int, height: Int = 0,
+          align: Alignment = Alignment.left,
+          text: String = String(""),
+          font_number: Int = 0,
+          back_color: String = String(""),
+          v_align: Alignment = Alignment.middle,
+          end_data: Bool = True):
+
+    var cell_height = self.default_cell_height
+    if height != 0:
+      cell_height = height
+
+    var align_str = self.get_alignment(align)
+    var v_align_str = self.get_alignment(v_align)
+
+    if len(text) == 0:
+      var data_str = String()
+      data_str += '<td width="'
+      data_str += str(width)
+      data_str += '" align="'
+      data_str += align_str
+      data_str += '" valign="'
+      data_str += v_align_str
+      data_str += '" '
+
+      if cell_height != 0:
+        data_str += 'height="'
+        data_str += str(cell_height)
+        data_str += '" '
+
+      if len(back_color) > 0:
+        data_str += 'bgcolor="'
+        data_str += back_color
+        data_str += '" '
+
+      data_str += ">"
+      self.add(String(data_str))
+    else:
+      # Replace underscore with &nbsp;
+      var processed_text = text.replace("_", "&nbsp;")
+
+      var data_str = String()
+      data_str += '<td width="'
+      data_str += str(width)
+      data_str += '" align="'
+      data_str += align_str
+      data_str += '" '
+
+      if cell_height != 0:
+        data_str += 'height="'
+        data_str += str(cell_height)
+        data_str += '" '
+
+      if len(back_color) > 0:
+        data_str += 'bgcolor="'
+        data_str += back_color
+        data_str += '" '
+
+      data_str += ">"
+      self.add(data_str)
+
+      self.add(processed_text)
+
+      if end_data:
+        self.end_data()
 
   fn lorem(self) -> String:
     var result = "lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diem nonummy "
