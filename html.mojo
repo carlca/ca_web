@@ -37,7 +37,7 @@ struct Font:
 
 #----------------------------------------------------------------------------------------------------------------------
 
-struct Html(Writable, Stringable):
+struct Html(Stringable, Writable):
   var default_cell_height: Int
   var font_bold: Bool
   var font: Font
@@ -113,8 +113,8 @@ struct Html(Writable, Stringable):
   fn end_body(mut self):
     self.add("</body>")
 
-  fn html(mut self):
-    self.add("<html>")
+  fn html(mut self, country: String = "en"):
+    self.add('<html lang="' + country + '">')
 
   fn end_html(mut self):
     self.add("</html>")
@@ -222,12 +222,7 @@ struct Html(Writable, Stringable):
 
   fn form(mut self, name: String, action: String, method: String = "post"):
     var form_str = String("<form name=")
-    form_str += name
-    form_str += " action="
-    form_str += action
-    form_str += " method="
-    form_str += method
-    form_str += ">"
+    form_str += name + " action=" + action + " method=" + method + ">"
     self.add(form_str)
 
   fn hidden_field(mut self, name: String, value: String):
@@ -237,9 +232,7 @@ struct Html(Writable, Stringable):
       var page_str = self.lines[index]
       # Create the search string
       var search_str = String()
-      search_str += '<input type=hidden name="'
-      search_str += name
-      search_str += '"'
+      search_str += '<input type=hidden name="' + name + '"'
       var hid_pos = page_str.find(search_str)
       if hid_pos >= 0:
         # delete the existing hidden field
@@ -317,27 +310,6 @@ struct Html(Writable, Stringable):
     input_str += self.check_attrib_string("value", value)
     input_str += self.check_attrib_int("size", size)
     input_str += self.check_attrib_int("maxlength", max_length)
-
-    # if len(name) > 0:
-    #   input_str += 'name="'
-    #   input_str += name
-    #   input_str += '" '
-
-    # # Default value of input text
-    # if len(value) > 0:
-    #   input_str += 'value="'
-    #   input_str += value
-    #   input_str += '" '
-
-    # if size != 0:
-    #   input_str += 'size="'
-    #   input_str += str(size)
-    #   input_str += '" '
-
-    # if max_length != 0:
-    #   input_str += 'maxlength="'
-    #   input_str += str(max_length)
-    #   input_str += '" '
 
     input_str += '>'
     self.add(input_str)
@@ -509,7 +481,7 @@ struct Html(Writable, Stringable):
     var indent_space = "  "
 
     # Tags that need special handling
-    var standalone_tags = List("<img", "<input", "<br", "<hr")
+    var standalone_tags = List("<img", "<input", "<br", "<hr", "<meta")
     var same_level_tags = List("<h1", "<h2", "<h3", "<h4", "<h5", "<h6", "<p")
 
     for line in self.lines:

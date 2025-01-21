@@ -13,10 +13,7 @@ struct Printer(HTTPService):
 
   fn get_page_html(mut self) -> String:
     var h = Html()
-    h.html()
-    h.head()
-    h.title("Test")
-    h.end_head()
+    h.html_head("lightspeed_http and ca_web test")
     h.body("white", "", "", "", "", "", "purple")
     h.set_font("Arial")
     h.h1("Test Heading 1")
@@ -24,6 +21,7 @@ struct Printer(HTTPService):
     h.h3("Test Heading 3")
     h.h4("Test Heading 4")
     h.h5("Test Heading 5")
+    h.h6("Test Heading 6")
     h.end_font()
     h.image("/earlyspring.png")
     h.set_font("Arial", 5, "Teal")
