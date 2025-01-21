@@ -58,6 +58,7 @@ struct Html(Writable, Stringable):
     self.font_bold = False
     self.font = Font()
     self.lines = List[String]()
+    self.lines.append("<!DOCTYPE html>")
 
   fn get_alignment(self, align: Alignment) -> String:
     if align == Alignment.left:
@@ -237,10 +238,9 @@ struct Html(Writable, Stringable):
       search_str += '<input type=hidden name="'
       search_str += name
       search_str += '"'
-      # Find position of search string in page_str
-      # Note: Mojo might need a custom implementation of string search
       var hid_pos = page_str.find(search_str)
       if hid_pos >= 0:
+        # delete the existing hidden field
         rem_item = self.lines.pop(index)
       index -= 1
 
@@ -266,6 +266,89 @@ struct Html(Writable, Stringable):
 
     self.add(radio_str)
     self.add(text)
+
+  fn check_box(mut self, name: String, text: String, value: String, checked: Bool):
+    var check_str = String()
+    check_str += '<input name="'
+    check_str += name
+    check_str += '" type=checkbox value='
+    check_str += value
+    check_str += ' '
+    if checked:
+      check_str += 'checked '
+    check_str += '>'
+
+    self.add(check_str)
+    self.add(text)
+
+  fn text_area(mut self, name: String, value: String,
+               cols: Int, rows: Int, font_number: Int = 0):
+
+    var text_area_str = String()
+    text_area_str += '<textarea name="'
+    text_area_str += name
+    text_area_str += '" cols="'
+    text_area_str += str(cols)
+    text_area_str += '" rows="'
+    text_area_str += str(rows)
+    text_area_str += '">'
+
+    self.add(text_area_str)
+    self.add(value)
+    self.add(String('</textarea>'))
+
+  fn input_text(mut self, name: String,
+                value: String = String(""),
+                size: Int = 0,
+                max_length: Int = 0,
+                password: Bool = False):
+
+    # Extend the type of the input field - https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input
+
+    var input_str = String()
+    if password:
+      input_str += '<input type=password '
+    else:
+      input_str += '<input type=text '
+
+    input_str += self.check_attrib_string("name", name)
+    input_str += self.check_attrib_string("value", value)
+    input_str += self.check_attrib_int("size", size)
+    input_str += self.check_attrib_int("maxlength", max_length)
+
+    # if len(name) > 0:
+    #   input_str += 'name="'
+    #   input_str += name
+    #   input_str += '" '
+
+    # # Default value of input text
+    # if len(value) > 0:
+    #   input_str += 'value="'
+    #   input_str += value
+    #   input_str += '" '
+
+    # if size != 0:
+    #   input_str += 'size="'
+    #   input_str += str(size)
+    #   input_str += '" '
+
+    # if max_length != 0:
+    #   input_str += 'maxlength="'
+    #   input_str += str(max_length)
+    #   input_str += '" '
+
+    input_str += '>'
+    self.add(input_str)
+
+  fn check_attrib_string(self, attrib_name: String, attrib_value: String) -> String:
+    if len(attrib_value) > 0:
+      return attrib_name + '=' + '"' + attrib_value + '" '
+    return ""
+
+  fn check_attrib_int(self, attrib_name: String, attrib_value: Int) -> String:
+    if attrib_value > 0:
+      return attrib_name + '=' + '"' + str(attrib_value) + '" '
+    return ""
 
   fn href(mut self, url: String,
           target: String = String(""),
@@ -417,6 +500,60 @@ struct Html(Writable, Stringable):
 
       if end_data:
         self.end_data()
+
+  fn prettify(mut self):
+    var indent_level: Int = 0
+    var pretty_lines = List[String]()
+    var indent_space = "  "
+
+    # Tags that need special handling
+    var standalone_tags = List("<img", "<input", "<br", "<hr")
+    var same_level_tags = List("<h1", "<h2", "<h3", "<h4", "<h5", "<h6", "<p")
+
+    for line in self.lines:
+      var trimmed = line[].strip()
+      if len(trimmed) == 0:
+        continue
+
+      # Special handling for DOCTYPE - no indentation
+      if trimmed.startswith("<!DOCTYPE") or trimmed.startswith("<!doctype"):
+        pretty_lines.append(trimmed)
+        continue
+
+      # Special handling for </head> to reset indentation
+      if trimmed == "</head>":
+        indent_level = 1  # Reset to base level after head section
+
+      # Normal closing tag handling
+      elif trimmed.startswith("</"):
+        indent_level = max(0, indent_level - 1)
+
+      # Check if it's a standalone tag
+      var is_standalone = False
+      for tag in standalone_tags:
+        if trimmed.startswith((tag[])):
+          is_standalone = True
+          break
+
+      # Create the indented line with current indent_level
+      var pretty_line = String("")
+      for _ in range(indent_level):
+        pretty_line += indent_space
+      pretty_line += trimmed
+      pretty_lines.append(pretty_line)
+
+      # Increase indent for opening tags AFTER adding the line
+      if trimmed.startswith("<") and not trimmed.startswith("</") and not is_standalone:
+        var should_indent = True
+        for tag in same_level_tags:
+          if trimmed.startswith((tag[])):
+            should_indent = False
+            break
+        if should_indent:
+          indent_level += 1
+
+    # Replace the original lines with our prettified lines
+    self.lines = pretty_lines
 
   fn lorem(self) -> String:
     var result = "lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diem nonummy "
