@@ -59,7 +59,6 @@ struct Html(Stringable, Writable):
     self.font = Font()
     self.lines = List[String]()
     self.lines.append("<!DOCTYPE html>")
-    self.add('<html lang="en">')
 
   fn get_alignment(self, align: Alignment) -> String:
     if align == Alignment.left:
