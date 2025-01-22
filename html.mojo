@@ -17,6 +17,7 @@ struct Alignment:
 
 #----------------------------------------------------------------------------------------------------------------------
 
+@value
 struct Font:
   var bold: Bool
   var color: String
@@ -37,7 +38,8 @@ struct Font:
 
 #----------------------------------------------------------------------------------------------------------------------
 
-struct Html(Stringable, Writable):
+@value
+struct Html(Copyable, Stringable, Writable):
   var default_cell_height: Int
   var font_bold: Bool
   var font: Font
@@ -53,12 +55,21 @@ struct Html(Stringable, Writable):
       if i < len(self.lines) - 1:
         writer.write(delimiter)
 
-  fn __init__(mut self):
+  fn __init__(out self):
     self.default_cell_height = 0
     self.font_bold = False
     self.font = Font()
     self.lines = List[String]()
     self.lines.append("<!DOCTYPE html>")
+
+  fn __copyinit__(out self, existing: Self):
+    self.default_cell_height = existing.default_cell_height
+    self.font_bold = existing.font_bold
+    self.font = Font()
+    self.font.assign(existing.font)
+    self.lines = List[String]()
+    for line in existing.lines:
+      self.lines.append(line[])
 
   fn get_alignment(self, align: Alignment) -> String:
     if align == Alignment.left:
@@ -87,7 +98,7 @@ struct Html(Stringable, Writable):
 
   fn body(mut self, back_color: String = "", back_image: String = "",
           on_load: String = "", link: String = "", vlink: String = "",
-          alink: String = "", text_color: String = ""):
+          alink: String = "", text_color: String = "") -> ref[self] Self:
     var body_str = String("<body ")
 
     if back_color != "":
@@ -108,15 +119,9 @@ struct Html(Stringable, Writable):
     body_str = str(body_str.strip())
     body_str += ">"
     self.add(body_str)
+    return self
 
-  fn end_body(mut self):
-    self.add("</body>")
-
-  fn html(mut self, country: String = "en"):
-    self.add('<html lang="' + country + '">')
-
-  fn end_html(mut self):
-    self.add("</html>")
+  # - API Helper functions --------------------------------------------------------------------------------------------
 
   fn add(mut self, text: String):
     self.lines.append(text)
@@ -124,107 +129,159 @@ struct Html(Stringable, Writable):
   fn add_heading(mut self, level: Int, text: String):
     self.add("<h" + str(level) + ">" + text + "</h" + str(level) + ">")
 
-  fn blank(mut self):
-    self.add("<br>")
+  fn ignore(self, i: Html):
+    pass
 
-  fn bold(mut self, text: String = ""):
+  fn check_attrib_string(self, attrib_name: String, attrib_value: String) -> String:
+    if len(attrib_value) > 0:
+      return attrib_name + '=' + '"' + attrib_value + '" '
+    return ""
+
+  fn check_attrib_int(self, attrib_name: String, attrib_value: Int) -> String:
+    if attrib_value > 0:
+      return attrib_name + '=' + '"' + str(attrib_value) + '" '
+    return ""
+
+  # - Fluent API ------------------------------------------------------------------------------------------------------
+
+  fn end_body(mut self) -> ref[self] Self:
+    self.add("</body>")
+    return self
+
+  fn html(mut self, country: String = "en") -> ref[self] Self:
+    self.add('<html lang="' + country + '">')
+    return self
+
+  fn end_html(mut self) -> ref[self] Self:
+    self.add("</html>")
+    return self
+
+  fn blank(mut self) -> ref[self] Self:
+    self.add("<br>")
+    return self
+
+  fn bold(mut self, text: String = "") -> ref[self] Self:
     var bold_str = String()
     if text != "":
       bold_str += "</b>" + text + "<b>"
     self.add(bold_str)
+    return self
 
-  fn h1(mut self, text: String):
+  fn h1(mut self, text: String) -> ref[self] Self:
     self.add_heading(1, text)
+    return self
 
-  fn h2(mut self, text: String):
+  fn h2(mut self, text: String) -> ref[self] Self:
     self.add_heading(2, text)
+    return self
 
-  fn h3(mut self, text: String):
+  fn h3(mut self, text: String) -> ref[self] Self:
     self.add_heading(3, text)
+    return self
 
-  fn h4(mut self, text: String):
+  fn h4(mut self, text: String) -> ref[self] Self:
     self.add_heading(4, text)
+    return self
 
-  fn h5(mut self, text: String):
+  fn h5(mut self, text: String) -> ref[self] Self:
     self.add_heading(5, text)
+    return self
 
-  fn h6(mut self, text: String):
+  fn h6(mut self, text: String) -> ref[self] Self:
     self.add_heading(6, text)
+    return self
 
-  fn html_head(mut self, title: String):
-    self.html()
-    self.head()
-    self.title(title)
-    self.end_head()
+  fn html_head(mut self, title: String) -> ref[self] Self:
+    var _i = self.html().head().title(title).end_head()
+    return self
 
-  fn horz_rule(mut self):
+  fn horz_rule(mut self) -> ref[self] Self:
     self.add("<hr>")
+    return self
 
-  fn italic(mut self, text: String = ""):
+  fn italic(mut self, text: String = "") -> ref[self] Self:
     var italic_str = String()
     if text != "":
       italic_str += "<i>" + text + "</i>"
     self.add(italic_str)
+    return self
 
-  fn title(mut self, text: String):
+  fn title(mut self, text: String) -> ref[self] Self:
     self.add("<title>" + text + "</title>")
+    return self
 
-  fn end_bold(mut self):
+  fn end_bold(mut self) -> ref[self] Self:
     self.add("</b>")
+    return self
 
-  fn end_data(mut self):
+  fn end_data(mut self) -> ref[self] Self:
     self.add("</td>")
+    return self
 
-  fn end_font(mut self):
+  fn end_font(mut self) -> ref[self] Self:
     self.add("</font>")
     if self.font_bold:
       self.add("</b>")
       self.font_bold = False
+    return self
 
-  fn end_form(mut self):
+  fn end_form(mut self) -> ref[self] Self:
     self.add("</form>")
+    return self
 
-  fn end_head(mut self):
+  fn end_head(mut self) -> ref[self] Self:
     self.add("</head>")
+    return self
 
-  fn end_href(mut self):
+  fn end_href(mut self) -> ref[self] Self:
     self.add("</a>")
+    return self
 
-  fn end_italic(mut self):
+  fn end_italic(mut self) -> ref[self] Self:
     self.add("</i>")
+    return self
 
-  fn end_ordered_list(mut self):
+  fn end_ordered_list(mut self) -> ref[self] Self:
     self.add("</ol>")
+    return self
 
-  fn end_para(mut self):
+  fn end_para(mut self) -> ref[self] Self:
     self.add("</p>")
+    return self
 
-  fn end_row(mut self):
+  fn end_row(mut self) -> ref[self] Self:
     self.add("</tr>")
     self.add("")
+    return self
 
-  fn end_select(mut self):
+  fn end_select(mut self) -> ref[self] Self:
     self.add("</select>")
+    return self
 
-  fn head(mut self):
+  fn head(mut self) -> ref[self] Self:
     self.add("<head>")
     self.add("<meta charset='utf-8'>")
+    return self
 
-  fn end_table(mut self):
+  fn end_table(mut self) -> ref[self] Self:
     self.add("</table>")
+    return self
 
-  fn end_unordered_list(mut self):
+  fn end_unordered_list(mut self) -> ref[self] Self:
     self.add("</ul>")
+    return self
 
-  fn end_underline(mut self):
+  fn end_underline(mut self) -> ref[self] Self:
     self.add("</u>")
+    return self
 
-  fn form(mut self, name: String, action: String, method: String = "post"):
+  fn form(mut self, name: String, action: String, method: String = "post") -> ref[self] Self:
     var form_str = String("<form name=")
     form_str += name + " action=" + action + " method=" + method + ">"
     self.add(form_str)
+    return self
 
-  fn hidden_field(mut self, name: String, value: String):
+  fn hidden_field(mut self, name: String, value: String) -> ref[self] Self:
     var index = len(self.lines) - 1
     var rem_item: String
     while index >= 0:
@@ -246,8 +303,9 @@ struct Html(Stringable, Writable):
     new_field += value
     new_field += '">'
     self.add(new_field)
+    return self
 
-  fn radio_option(mut self, name: String, text: String, value: String, checked: Bool):
+  fn radio_option(mut self, name: String, text: String, value: String, checked: Bool) -> ref[self] Self:
     var radio_str = String()
     radio_str += '<input name="'
     radio_str += name
@@ -260,8 +318,9 @@ struct Html(Stringable, Writable):
 
     self.add(radio_str)
     self.add(text)
+    return self
 
-  fn check_box(mut self, name: String, text: String, value: String, checked: Bool):
+  fn check_box(mut self, name: String, text: String, value: String, checked: Bool) -> ref[self] Self:
     var check_str = String()
     check_str += '<input name="'
     check_str += name
@@ -274,9 +333,10 @@ struct Html(Stringable, Writable):
 
     self.add(check_str)
     self.add(text)
+    return self
 
   fn text_area(mut self, name: String, value: String,
-               cols: Int, rows: Int, font_number: Int = 0):
+               cols: Int, rows: Int, font_number: Int = 0) -> ref[self] Self:
 
     var text_area_str = String()
     text_area_str += '<textarea name="'
@@ -290,12 +350,13 @@ struct Html(Stringable, Writable):
     self.add(text_area_str)
     self.add(value)
     self.add(String('</textarea>'))
+    return self
 
   fn input_text(mut self, name: String,
                 value: String = String(""),
                 size: Int = 0,
                 max_length: Int = 0,
-                password: Bool = False):
+                password: Bool = False) -> ref[self] Self:
 
     # Extend the type of the input field - https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input
 
@@ -312,61 +373,53 @@ struct Html(Stringable, Writable):
 
     input_str += '>'
     self.add(input_str)
-
-  fn check_attrib_string(self, attrib_name: String, attrib_value: String) -> String:
-    if len(attrib_value) > 0:
-      return attrib_name + '=' + '"' + attrib_value + '" '
-    return ""
-
-  fn check_attrib_int(self, attrib_name: String, attrib_value: Int) -> String:
-    if attrib_value > 0:
-      return attrib_name + '=' + '"' + str(attrib_value) + '" '
-    return ""
+    return self
 
   fn href(mut self, url: String,
           target: String = String(""),
           on_mouse_over: String = String(""),
           on_mouse_out: String = String(""),
           on_mouse_down: String = String(""),
-          on_mouse_up: String = String("")):
+          on_mouse_up: String = String("")) -> ref[self] Self:
 
-      var href_str = String()
-      href_str += '<a href="'
-      href_str += url
-      href_str += '" '
+    var href_str = String()
+    href_str += '<a href="'
+    href_str += url
+    href_str += '" '
 
-      if len(target) > 0:
-          href_str += 'target="'
-          href_str += target
-          href_str += '" '
+    if len(target) > 0:
+        href_str += 'target="'
+        href_str += target
+        href_str += '" '
 
-      if len(on_mouse_over) > 0:
-          href_str += 'OnMouseOver="'
-          href_str += on_mouse_over
-          href_str += '" '
+    if len(on_mouse_over) > 0:
+        href_str += 'OnMouseOver="'
+        href_str += on_mouse_over
+        href_str += '" '
 
-      if len(on_mouse_out)  > 0:
-          href_str += 'OnMouseOut="'
-          href_str += on_mouse_out
-          href_str += '" '
+    if len(on_mouse_out)  > 0:
+        href_str += 'OnMouseOut="'
+        href_str += on_mouse_out
+        href_str += '" '
 
-      if len(on_mouse_down) > 0:
-          href_str += 'OnMouseDown="'
-          href_str += on_mouse_down
-          href_str += '" '
+    if len(on_mouse_down) > 0:
+        href_str += 'OnMouseDown="'
+        href_str += on_mouse_down
+        href_str += '" '
 
-      if len(on_mouse_up) > 0:
-          href_str += 'OnMouseUp="'
-          href_str += on_mouse_up
-          href_str += '" '
+    if len(on_mouse_up) > 0:
+        href_str += 'OnMouseUp="'
+        href_str += on_mouse_up
+        href_str += '" '
 
-      href_str += ">"
-      self.add(href_str)
+    href_str += ">"
+    self.add(href_str)
+    return self
 
   fn image(mut self, image: String, width: Int = 0, height: Int = 0,
            border: Int = 0, on_click: String = "",
            align: Alignment = Alignment.left, alt: String = "",
-           end_href: Bool = False):
+           end_href: Bool = False) -> ref[self] Self:
     var align_str = self.get_alignment(align)
     var img_str = '<img src="' + image + '" '
     if width != 0:
@@ -384,14 +437,29 @@ struct Html(Stringable, Writable):
     if end_href:
       img_str += "</a>"
     self.add(img_str)
+    return self
 
-  fn para(mut self, text: String = "") :
-    if text != "":
-      self.add("<p>" + text + "</p>")
-    else:
+  fn para(mut self, text: String = "", id: String = "") -> ref[self] Self:
+    if text == "" and id == "":
       self.add("<p>")
+      return self
+    elif text == "" and id != "":
+      self.add("<p id='" + id + "'/>")
+      return self
+    elif text != "" and id == "":
+      self.add("<p>" + text + "'/>")
+      return self
+    else:
+      self.add("<p id='" + id + "'>" + text + "</p>")
+      return self
 
-  fn set_font(mut self, typeface: String, size: Int = 0, color_name: String = "", bold: Bool = False):
+  fn script(mut self, script: String) -> ref[self] Self:
+    self.add("<script>")
+    self.add(script)
+    self.add("</script>")
+    return self
+
+  fn set_font(mut self, typeface: String, size: Int = 0, color_name: String = "", bold: Bool = False) -> ref[self] Self:
     var font_str = String("<font ")
     if color_name != "":
       font_str += 'color="' + color_name + '" '
@@ -404,9 +472,11 @@ struct Html(Stringable, Writable):
       font_str += "<b>"
       self.font_bold = True
     self.add(font_str)
+    return self
 
-  fn row(mut self):
+  fn row(mut self) -> ref[self] Self:
     self.add("<tr>")
+    return self
 
   fn data(mut self, width: Int, height: Int = 0,
           align: Alignment = Alignment.left,
@@ -414,7 +484,7 @@ struct Html(Stringable, Writable):
           font_number: Int = 0,
           back_color: String = String(""),
           v_align: Alignment = Alignment.middle,
-          end_data: Bool = True):
+          end_data: Bool = True) -> ref[self] Self:
 
     var cell_height = self.default_cell_height
     if height != 0:
@@ -472,7 +542,10 @@ struct Html(Stringable, Writable):
       self.add(processed_text)
 
       if end_data:
-        self.end_data()
+        var _i = self.end_data()
+    return self
+
+  # - Utility functions -----------------------------------------------------------------------------------------------
 
   fn prettify(mut self):
     var indent_level: Int = 0
