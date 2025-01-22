@@ -116,18 +116,21 @@ struct Html(Copyable, Stringable, Writable):
     if text_color != "":
       body_str += 'text="' + text_color + '" '
 
-    body_str = str(body_str.strip())
-    body_str += ">"
+    body_str = str(body_str.strip()) + ">"
     self.add(body_str)
     return self
 
   # - API Helper functions --------------------------------------------------------------------------------------------
 
-  fn add(mut self, text: String):
-    self.lines.append(text)
+  fn add(mut self, *text: String):
+    for t in text:
+      self.lines.append(t[])
 
   fn add_heading(mut self, level: Int, text: String):
-    self.add("<h" + str(level) + ">" + text + "</h" + str(level) + ">")
+    if text != "":
+      self.add("<h" + str(level) + ">" + text + "</h" + str(level) + ">")
+    else:
+      self.add("<h" + str(level) + ">")
 
   fn ignore(self, i: Html):
     pass
@@ -164,6 +167,8 @@ struct Html(Copyable, Stringable, Writable):
     var bold_str = String()
     if text != "":
       bold_str += "</b>" + text + "<b>"
+    else:
+      bold_str += "<b>"
     self.add(bold_str)
     return self
 
@@ -203,6 +208,8 @@ struct Html(Copyable, Stringable, Writable):
     var italic_str = String()
     if text != "":
       italic_str += "<i>" + text + "</i>"
+    else:
+      italic_str += "<i>"
     self.add(italic_str)
     return self
 
@@ -250,8 +257,7 @@ struct Html(Copyable, Stringable, Writable):
     return self
 
   fn end_row(mut self) -> ref[self] Self:
-    self.add("</tr>")
-    self.add("")
+    self.add("</tr>", "")
     return self
 
   fn end_select(mut self) -> ref[self] Self:
@@ -259,8 +265,7 @@ struct Html(Copyable, Stringable, Writable):
     return self
 
   fn head(mut self) -> ref[self] Self:
-    self.add("<head>")
-    self.add("<meta charset='utf-8'>")
+    self.add("<head>", "<meta charset='utf-8'>")
     return self
 
   fn end_table(mut self) -> ref[self] Self:
@@ -297,21 +302,13 @@ struct Html(Copyable, Stringable, Writable):
 
     # Add new hidden field
     var new_field = String()
-    new_field += '<input type=hidden name="'
-    new_field += name
-    new_field += '" value="'
-    new_field += value
-    new_field += '">'
+    new_field += '<input type=hidden name="' + name + '" value="' + value + '">'
     self.add(new_field)
     return self
 
   fn radio_option(mut self, name: String, text: String, value: String, checked: Bool) -> ref[self] Self:
     var radio_str = String()
-    radio_str += '<input name="'
-    radio_str += name
-    radio_str += '" type=radio value='
-    radio_str += value
-    radio_str += ' '
+    radio_str += '<input name="' + name + '" type=radio value=' + value + ' '
     if checked:
       radio_str += 'checked '
     radio_str += '>'
@@ -322,11 +319,7 @@ struct Html(Copyable, Stringable, Writable):
 
   fn check_box(mut self, name: String, text: String, value: String, checked: Bool) -> ref[self] Self:
     var check_str = String()
-    check_str += '<input name="'
-    check_str += name
-    check_str += '" type=checkbox value='
-    check_str += value
-    check_str += ' '
+    check_str += '<input name="' + name + '" type=checkbox value=' + value + ' '
     if checked:
       check_str += 'checked '
     check_str += '>'
@@ -339,17 +332,8 @@ struct Html(Copyable, Stringable, Writable):
                cols: Int, rows: Int, font_number: Int = 0) -> ref[self] Self:
 
     var text_area_str = String()
-    text_area_str += '<textarea name="'
-    text_area_str += name
-    text_area_str += '" cols="'
-    text_area_str += str(cols)
-    text_area_str += '" rows="'
-    text_area_str += str(rows)
-    text_area_str += '">'
-
-    self.add(text_area_str)
-    self.add(value)
-    self.add(String('</textarea>'))
+    text_area_str += '<textarea name="' + name + '" cols="' + str(cols) + '" rows="' + str(rows) + '">'
+    self.add(text_area_str, value, '</textarea>')
     return self
 
   fn input_text(mut self, name: String,
@@ -383,35 +367,17 @@ struct Html(Copyable, Stringable, Writable):
           on_mouse_up: String = String("")) -> ref[self] Self:
 
     var href_str = String()
-    href_str += '<a href="'
-    href_str += url
-    href_str += '" '
-
+    href_str += '<a href="' + url + '" '
     if len(target) > 0:
-        href_str += 'target="'
-        href_str += target
-        href_str += '" '
-
+        href_str += 'target="' + target + '" '
     if len(on_mouse_over) > 0:
-        href_str += 'OnMouseOver="'
-        href_str += on_mouse_over
-        href_str += '" '
-
+        href_str += 'OnMouseOver="' + on_mouse_over + '" '
     if len(on_mouse_out)  > 0:
-        href_str += 'OnMouseOut="'
-        href_str += on_mouse_out
-        href_str += '" '
-
+        href_str += 'OnMouseOut="' + on_mouse_out + '" '
     if len(on_mouse_down) > 0:
-        href_str += 'OnMouseDown="'
-        href_str += on_mouse_down
-        href_str += '" '
-
+        href_str += 'OnMouseDown="' + on_mouse_down + '" '
     if len(on_mouse_up) > 0:
-        href_str += 'OnMouseUp="'
-        href_str += on_mouse_up
-        href_str += '" '
-
+        href_str += 'OnMouseUp="' + on_mouse_up + '" '
     href_str += ">"
     self.add(href_str)
     return self
@@ -426,8 +392,7 @@ struct Html(Copyable, Stringable, Writable):
       img_str += 'width="' + str(width) + '" '
     if height != 0:
       img_str += 'height="' + str(height) + '" '
-    img_str += 'align="' + align_str + '" '
-    img_str += 'border="' + str(border) + '" '
+    img_str += 'align="' + align_str + '" ' + 'border="' + str(border) + '" '
     if on_click != "":
       img_str += 'onclick="' + on_click + '" '
     if alt != "":
@@ -454,10 +419,10 @@ struct Html(Copyable, Stringable, Writable):
       return self
 
   fn script(mut self, script: String) -> ref[self] Self:
-    self.add("<script>")
-    self.add(script)
-    self.add("</script>")
+    self.add("<script>", script, "</script>")
     return self
+
+  # Need a neat way to get multi line scripts into the script tag
 
   fn set_font(mut self, typeface: String, size: Int = 0, color_name: String = "", bold: Bool = False) -> ref[self] Self:
     var font_str = String("<font ")
@@ -495,50 +460,24 @@ struct Html(Copyable, Stringable, Writable):
 
     if len(text) == 0:
       var data_str = String()
-      data_str += '<td width="'
-      data_str += str(width)
-      data_str += '" align="'
-      data_str += align_str
-      data_str += '" valign="'
-      data_str += v_align_str
-      data_str += '" '
-
+      data_str += '<td width="' + str(width) + '" align="' + align_str + '" valign="' + v_align_str + '" '
       if cell_height != 0:
-        data_str += 'height="'
-        data_str += str(cell_height)
-        data_str += '" '
-
+        data_str += 'height="' + str(cell_height) + '" '
       if len(back_color) > 0:
-        data_str += 'bgcolor="'
-        data_str += back_color
-        data_str += '" '
-
+        data_str += 'bgcolor="' + back_color + '" '
       data_str += ">"
       self.add(String(data_str))
     else:
       # Replace underscore with &nbsp;
       var processed_text = text.replace("_", "&nbsp;")
-
       var data_str = String()
-      data_str += '<td width="'
-      data_str += str(width)
-      data_str += '" align="'
-      data_str += align_str
-      data_str += '" '
-
+      data_str += '<td width="' + str(width) + '" align="' + align_str + '" valign="' + v_align_str + '" '
       if cell_height != 0:
-        data_str += 'height="'
-        data_str += str(cell_height)
-        data_str += '" '
-
+        data_str += 'height="' + str(cell_height) + '" '
       if len(back_color) > 0:
-        data_str += 'bgcolor="'
-        data_str += back_color
-        data_str += '" '
-
+        data_str += 'bgcolor="' + back_color + '" '
       data_str += ">"
       self.add(data_str)
-
       self.add(processed_text)
 
       if end_data:
