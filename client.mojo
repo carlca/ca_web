@@ -2,7 +2,7 @@ from lightbug_http import *
 from html import Html
 
 @value
-struct Printer(HTTPService):
+struct PageHandler(HTTPService):
   fn func(mut self, req: HTTPRequest) raises -> HTTPResponse:
     var uri = req.uri
     if uri.path == "/":
@@ -14,9 +14,8 @@ struct Printer(HTTPService):
   fn ignore(self, i: Html):
     pass
 
-
   fn get_page_html(mut self) -> String:
-    var h = Html()
+    h = Html()
     _ = h.html_head("lightspeed_http and ca_web test")
     _ = h.body("white", "", "", "", "", "", "purple")
     _ = h.set_font("Arial")
@@ -43,5 +42,5 @@ struct Printer(HTTPService):
 
 fn main() raises:
   var server = Server()
-  var handler = Printer()
+  var handler = PageHandler()
   server.listen_and_serve("0.0.0.0:8080", handler)

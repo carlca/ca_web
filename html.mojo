@@ -406,13 +406,13 @@ struct Html(Copyable, Stringable, Writable):
 
   fn para(mut self, text: String = "", id: String = "") -> ref[self] Self:
     if text == "" and id == "":
-      self.add("<p>")
+      self.add("<p>")                   # OK
       return self
     elif text == "" and id != "":
-      self.add("<p id='" + id + "'/>")
+      self.add("<p id='" + id + "'/>")  # OK
       return self
     elif text != "" and id == "":
-      self.add("<p>" + text + "'/>")
+      self.add("<p>" + text + "</p>")
       return self
     else:
       self.add("<p id='" + id + "'>" + text + "</p>")
@@ -613,8 +613,9 @@ struct Html(Copyable, Stringable, Writable):
 #     return result
 
 fn main():
-  var html = Html()
-  html.html()
-  html.body("white", "", "", "", "", "", "black")
-  html.end_html()
-  print(html)
+  ...
+  # var html = Html()
+  # html.html()
+  # html.body("white", "", "", "", "", "", "black")
+  # html.end_html()
+  # print(html)
