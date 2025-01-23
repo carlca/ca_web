@@ -2,7 +2,7 @@
 authors = ["Carl Caulkett <carl.caulkett@gmail.com>"]
 channels = [
     "conda-forge",
-    "https://conda.modular.com/max",
+    "https://conda.modular.com/max-nightly",
     "https://repo.prefix.dev/mojo-community",
 ]
 description = "Testing a2svior's lightbug_http web server package"
@@ -11,8 +11,9 @@ platforms = ["osx-arm64"]
 version = "0.1.0"
 
 [tasks]
+test = "magic run mojo test_packages.mojo"
 default = "magic run mojo client.mojo"
 
 [dependencies]
-max = ">=24.6.0,<25"
+max = "*"
 lightbug_http = ">=0.1.9"
