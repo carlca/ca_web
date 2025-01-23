@@ -567,7 +567,7 @@ struct Html(Copyable, Stringable, Writable):
     result += "becoming detached from the meaning of texts. The treatment of copy in purely "
     result += "formal terms, reduced to blocks of texture on a page, has lead to the typographer's "
     result += "obsession with craft and disregard of meaning. Dummy text is text that is not "
-    result += "meant to be read, but only looked at; a shape. The choice of latin is crucial to "
+    result += "meant to be read, but only looked at; a shape. The choice of Latin is crucial to "
     result += "this function in that it is a dead language. Working with dummy text, the "
     result += "designer only brings into play part of his/her array of tools/skills to convey "
     result += "meaning."
