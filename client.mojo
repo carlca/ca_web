@@ -1,6 +1,7 @@
 from lightbug_http import *
 from html import Html
-from html import Style
+from style import Style
+from colors import Colors
 
 @value
 struct PageHandler(HTTPService):
@@ -19,10 +20,10 @@ struct PageHandler(HTTPService):
     var page = Html()
     var style = Style()
 
-    style.p().color("purple")
-    style.h1().color("red")
-    style.h2().color("yellow")
-    style.h3().color("green")
+    style.p().color(Colors.blueviolet)
+    style.h1().color(Colors.red)
+    style.h2().color(Colors.goldenrod)
+    style.h3().color(Colors.green)
 
     page.html_head("lightspeed_http and ca_web test", style)
     page.body("grey", "", "", "", "", "", "")
