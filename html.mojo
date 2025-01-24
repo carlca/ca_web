@@ -196,8 +196,16 @@ struct Html(Copyable, Stringable, Writable):
     self.add_heading(6, text)
     return self
 
-  fn html_head(mut self, title: String) -> ref[self] Self:
-    var _i = self.html().head().title(title).end_head()
+  fn head(mut self, style: Style = Style()) -> ref[self] Self:
+    self.add("<head>", "<meta charset='utf-8'>")
+    if style.lines.size > 0:
+      self.add("<style>")
+      self.add(style.out())
+      self.add("</style>")
+    return self
+
+  fn html_head(mut self, title: String, style: Style = Style()) -> ref[self] Self:
+    var _i = self.html().head(style).title(title).end_head()
     return self
 
   fn horz_rule(mut self) -> ref[self] Self:
@@ -262,10 +270,6 @@ struct Html(Copyable, Stringable, Writable):
 
   fn end_select(mut self) -> ref[self] Self:
     self.add("</select>")
-    return self
-
-  fn head(mut self) -> ref[self] Self:
-    self.add("<head>", "<meta charset='utf-8'>")
     return self
 
   fn end_table(mut self) -> ref[self] Self:
@@ -484,6 +488,10 @@ struct Html(Copyable, Stringable, Writable):
         var _i = self.end_data()
     return self
 
+  fn style(mut self, style: Style) -> ref[self] Self:
+    self.add("<style>" + style.out() + "</style>")
+    return self
+
   # - Utility functions -----------------------------------------------------------------------------------------------
 
   fn prettify(mut self):
@@ -571,6 +579,44 @@ struct Html(Copyable, Stringable, Writable):
     result += "this function in that it is a dead language. Working with dummy text, the "
     result += "designer only brings into play part of his/her array of tools/skills to convey "
     result += "meaning."
+    return result
+
+@value
+struct Style(Copyable):
+
+  var lines: List[String]
+
+  fn __init__(out self):
+    self.lines = List[String]()
+
+  fn add(mut self, text: String):
+    self.lines.append(text)
+
+  fn p(mut self) -> ref[self] Self:
+    self.add("p {")
+    return self
+
+  fn h1(mut self) -> ref[self] Self:
+    self.add("h1 {")
+    return self
+
+  fn h2(mut self) -> ref[self] Self:
+    self.add("h2 {")
+    return self
+
+  fn h3(mut self) -> ref[self] Self:
+    self.add("h3 {")
+    return self
+
+  fn color(mut self, color: String) -> ref[self] Self:
+    self.add("color: " + color + ";")
+    self.add("}")
+    return self
+
+  fn out(self) -> String:
+    var result = String()
+    for line in self.lines:
+      result += line[]
     return result
 
   # fn set_font(mut self, font: Font):

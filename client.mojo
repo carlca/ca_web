@@ -1,5 +1,6 @@
 from lightbug_http import *
 from html import Html
+from html import Style
 
 @value
 struct PageHandler(HTTPService):
@@ -15,25 +16,32 @@ struct PageHandler(HTTPService):
     pass
 
   fn get_page_html(mut self) -> String:
-    h = Html()
-    _ = h.html_head("lightspeed_http and ca_web test")
-    _ = h.body("white", "", "", "", "", "", "purple")
-    _ = h.set_font("Arial")
-    _ = h.para("", "datetime")
-    _ = h.script('let datetime = new Date(); document.getElementById("datetime").innerHTML = datetime;')
-    _ = h.h1("Test Heading 1").h2("Test Heading 2").h3("Test Heading 3").h4("Test Heading 4").h5("Test Heading 5").h6("Test Heading 6")
-    _ = h.end_font()
-    _ = h.image("/earlyspring.png")
-    _ = h.set_font("Arial", 5, "Teal")
-    _ = h.para(h.lorem())
-    _ = h.para(h.post_modern())
-    _ = h.input_text("password", "1234go", 23, 23)
-    _ = h.input_text("password", "1234go", 23, 23, True)
-    _ = h.end_font()
-    _ = h.end_body()
-    _ = h.end_html()
-    _ = h.prettify()
-    return str(h)
+    var page = Html()
+    var style = Style()
+
+    style.p().color("purple")
+    style.h1().color("red")
+    style.h2().color("yellow")
+    style.h3().color("green")
+
+    page.html_head("lightspeed_http and ca_web test", style)
+    page.body("grey", "", "", "", "", "", "")
+    page.set_font("Arial")
+    page.para("", "datetime")
+    page.script('let datetime = new Date(); document.getElementById("datetime").innerHTML = datetime;')
+    page.h1("Test Heading 1").h2("Test Heading 2").h3("Test Heading 3").h4("Test Heading 4").h5("Test Heading 5").h6("Test Heading 6")
+    page.end_font()
+    page.image("/earlyspring.png")
+    page.set_font("Arial", 5, "Teal")
+    page.para(page.lorem())
+    page.para(page.post_modern())
+    page.input_text("password", "1234go", 23, 23)
+    page.input_text("password", "1234go", 23, 23, True)
+    page.end_font()
+    page.end_body()
+    page.end_html()
+    page.prettify()
+    return str(page)
 
   fn get_image(mut self, path: String) raises -> String:
     var file_name = path.split("/")[-1]
