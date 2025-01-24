@@ -496,10 +496,70 @@ struct Html(Copyable, Stringable, Writable):
 
   # - Utility functions -----------------------------------------------------------------------------------------------
 
-  fn prettify(mut self):
+  # fn prettify(mut self):
+  #   var indent_level: Int = 0
+  #   var pretty_lines = List[String]()
+  #   var indent_space = "  "
+
+  #   # Tags that need special handling
+  #   var standalone_tags = List("<img", "<input", "<br", "<hr", "<meta")
+  #   var same_level_tags = List("<h1", "<h2", "<h3", "<h4", "<h5", "<h6", "<p")
+
+  #   for line in self.lines:
+  #     var trimmed = line[].strip()
+  #     if len(trimmed) == 0:
+  #       continue
+
+  #     # Special handling for DOCTYPE - no indentation
+  #     if trimmed.startswith("<!DOCTYPE") or trimmed.startswith("<!doctype"):
+  #       pretty_lines.append(trimmed)
+  #       continue
+
+  #     # Special handling for </head> to reset indentation
+  #     if trimmed == "</head>":
+  #       indent_level = 1  # Reset to base level after head section
+
+  #     # Normal closing tag handling
+  #     elif trimmed.startswith("</"):
+  #       indent_level = max(0, indent_level - 1)
+
+  #     # Check if it's a standalone tag
+  #     var is_standalone = False
+  #     for tag in standalone_tags:
+  #       if trimmed.startswith((tag[])):
+  #         is_standalone = True
+  #         break
+
+  #     # Create the indented line with current indent_level
+  #     var pretty_line = String("")
+  #     for _ in range(indent_level):
+  #       pretty_line += indent_space
+  #     pretty_line += trimmed
+  #     pretty_lines.append(pretty_line)
+
+  #     # Increase indent for opening tags AFTER adding the line
+  #     if trimmed.startswith("<") and not trimmed.startswith("</") and not is_standalone:
+  #       var should_indent = True
+  #       for tag in same_level_tags:
+  #         if trimmed.startswith((tag[])):
+  #           should_indent = False
+  #           break
+  #       if should_indent:
+  #         indent_level += 1
+
+  #   # Replace the original lines with our prettified lines
+  #   self.lines = pretty_lines
+
+  #   return self
+
+  fn prettify(mut self) raises:
     var indent_level: Int = 0
     var pretty_lines = List[String]()
     var indent_space = "  "
+    var in_style = False
+    var in_script = False
+    var css_content = List[String]()
+    var js_content = List[String]()
 
     # Tags that need special handling
     var standalone_tags = List("<img", "<input", "<br", "<hr", "<meta")
@@ -510,34 +570,63 @@ struct Html(Copyable, Stringable, Writable):
       if len(trimmed) == 0:
         continue
 
-      # Special handling for DOCTYPE - no indentation
+      # Handle CSS content
+      if trimmed.startswith("<style"):
+        in_style = True
+        pretty_lines.append(indent_space * indent_level + trimmed)
+        indent_level += 1
+        continue
+
+      if trimmed == "</style>":
+        in_style = False
+        pretty_lines.extend(self._format_css(css_content, indent_level))
+        css_content = List[String]()
+        indent_level -= 1
+        pretty_lines.append(indent_space * indent_level + trimmed)
+        continue
+
+      # Handle JavaScript content
+      if trimmed.startswith("<script"):
+        in_script = True
+        pretty_lines.append(indent_space * indent_level + trimmed)
+        indent_level += 1
+        continue
+
+      if trimmed == "</script>":
+        in_script = False
+        pretty_lines.extend(self._format_js(js_content, indent_level))
+        js_content = List[String]()
+        indent_level -= 1
+        pretty_lines.append(indent_space * indent_level + trimmed)
+        continue
+
+      # Collect CSS/JS content
+      if in_style:
+        css_content.append(trimmed)
+        continue
+      if in_script:
+        js_content.append(trimmed)
+        continue
+
+      # Regular HTML formatting
       if trimmed.startswith("<!DOCTYPE") or trimmed.startswith("<!doctype"):
         pretty_lines.append(trimmed)
         continue
 
-      # Special handling for </head> to reset indentation
       if trimmed == "</head>":
-        indent_level = 1  # Reset to base level after head section
+        indent_level = 1
 
-      # Normal closing tag handling
       elif trimmed.startswith("</"):
         indent_level = max(0, indent_level - 1)
 
-      # Check if it's a standalone tag
       var is_standalone = False
       for tag in standalone_tags:
         if trimmed.startswith((tag[])):
           is_standalone = True
           break
 
-      # Create the indented line with current indent_level
-      var pretty_line = String("")
-      for _ in range(indent_level):
-        pretty_line += indent_space
-      pretty_line += trimmed
-      pretty_lines.append(pretty_line)
+      pretty_lines.append(indent_space * indent_level + trimmed)
 
-      # Increase indent for opening tags AFTER adding the line
       if trimmed.startswith("<") and not trimmed.startswith("</") and not is_standalone:
         var should_indent = True
         for tag in same_level_tags:
@@ -547,8 +636,65 @@ struct Html(Copyable, Stringable, Writable):
         if should_indent:
           indent_level += 1
 
-    # Replace the original lines with our prettified lines
     self.lines = pretty_lines
+
+  fn _format_css(self, css_lines: List[String], indent_level: Int) raises -> List[String]:
+    var formatted = List[String]()
+    var current_indent = indent_level
+    var css_block = String("")
+
+    for line in css_lines:
+      var trimmed = line[].strip()
+      css_block += str(trimmed) + " "
+
+    # Now split the CSS block into rules
+    var rules = css_block.split("}")
+    for rule in rules:
+      var rule_trimmed = rule[].strip()
+      if len(rule_trimmed) == 0:
+        continue
+
+      # Split into selector and properties
+      var parts = str(rule_trimmed).split("{")
+      if len(parts) != 2:
+        continue
+
+      var selector = str(parts[0]).strip()
+      var properties = str(parts[1]).strip()
+
+      # Add selector
+      formatted.append("  " * current_indent + selector + " {")
+
+      # Add properties with extra indent
+      for prop in str(properties).split(";"):
+        var prop_trimmed = prop[].strip()
+        if len(prop_trimmed) > 0:
+          formatted.append("  " * (current_indent + 1) + prop_trimmed + ";")
+
+      # Add closing brace
+      formatted.append("  " * current_indent + "}")
+
+    return formatted
+
+  fn _format_js(self, js_lines: List[String], indent_level: Int) -> List[String]:
+    var formatted = List[String]()
+    var current_indent = indent_level
+
+    for line in js_lines:
+      var trimmed = line[].strip()
+      if len(trimmed) == 0:
+        continue
+
+      if trimmed.endswith("{"):
+        formatted.append("  " * current_indent + trimmed)
+        current_indent += 1
+      elif trimmed.startswith("}"):
+        current_indent -= 1
+        formatted.append("  " * current_indent + trimmed)
+      else:
+        formatted.append("  " * current_indent + trimmed)
+
+    return formatted
 
   fn lorem(self) -> String:
     var result = "lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diem nonummy "

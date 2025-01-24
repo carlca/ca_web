@@ -16,16 +16,16 @@ struct PageHandler(HTTPService):
   fn ignore(self, i: Html):
     pass
 
-  fn get_page_html(mut self) -> String:
+  fn get_page_html(mut self) raises -> String:
     var page = Html()
     var style = Style()
 
-    style.p().color(Colors.blueviolet)
-    style.h1().color(Colors.red)
-    style.h2().color(Colors.goldenrod)
-    style.h3().color(Colors.green)
+    _ = style.p().color(Colors.blueviolet).background_color(Colors.lightyellow)
+    _ = style.h1().color(Colors.red).background_color(Colors.lightblue)
+    _ = style.h2().color(Colors.goldenrod).background_color(Colors.lightgreen)
+    _ = style.h3().color(Colors.green).background_color(Colors.lightcoral)
 
-    page.html_head("lightspeed_http and ca_web test", style)
+    _ = page.html_head("lightspeed_http and ca_web test", style)
     page.body("grey", "", "", "", "", "", "")
     page.set_font("Arial")
     page.para("", "datetime")
