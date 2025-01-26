@@ -1,7 +1,8 @@
 from lightbug_http import *
 from html import Html
-from style import Style
+from style import Style, FontUnit
 from colors import Colors
+from benchmark import keep
 
 @value
 struct PageHandler(HTTPService):
@@ -20,26 +21,39 @@ struct PageHandler(HTTPService):
     var page = Html()
     var style = Style()
 
-    _ = style.p().color(Colors.blueviolet).background_color(Colors.lightyellow)
-    _ = style.h1().color(Colors.red).background_color(Colors.lightblue)
-    _ = style.h2().color(Colors.goldenrod).background_color(Colors.lightgreen)
-    _ = style.h3().color(Colors.green).background_color(Colors.lightcoral)
+    style.p().
+      font_family("arial").
+      font_size(23, FontUnit.PX).
+      color(Colors.blueviolet).
+      background_color(Colors.yellow)
+    style.h1().
+      font_family("Times New Roman, serif").
+      color(Colors.red).
+      background_color(Colors.lightblue)
+    style.h2().
+      font_family("Times New Roman, serif").
+      color(Colors.goldenrod).
+      background_color(Colors.lightgreen)
+    style.h3().
+      font_family("Times New Roman, serif").
+      color(Colors.green).
+      background_color(Colors.lightcoral)
+    style.body()
+      .background_color(Colors.azure)
+      .font_size(16, FontUnit.PX)
+      .font_family("Arial, sans-serif")
+      .color(Colors.darkblue)
+      .end_body()
 
-    _ = page.html_head("lightspeed_http and ca_web test", style)
-    page.body("grey", "", "", "", "", "", "")
-    page.set_font("Arial")
+    page.html_head("lightspeed_http and ca_web test", style)
     page.para("", "datetime")
     page.script('let datetime = new Date(); document.getElementById("datetime").innerHTML = datetime;')
     page.h1("Test Heading 1").h2("Test Heading 2").h3("Test Heading 3").h4("Test Heading 4").h5("Test Heading 5").h6("Test Heading 6")
-    page.end_font()
     page.image("/earlyspring.png")
-    page.set_font("Arial", 5, "Teal")
     page.para(page.lorem())
     page.para(page.post_modern())
     page.input_text("password", "1234go", 23, 23)
     page.input_text("password", "1234go", 23, 23, True)
-    page.end_font()
-    page.end_body()
     page.end_html()
     page.prettify()
     return str(page)

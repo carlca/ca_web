@@ -1,50 +1,10 @@
 from colors import *
 from style import Style
-
-@value
-struct Alignment:
-  var _value: UInt8
-  alias left = Self(0)
-  alias right = Self(1)
-  alias top = Self(2)
-  alias texttop = Self(3)
-  alias middle = Self(4)
-  alias absmiddle = Self(5)
-  alias baseline = Self(6)
-  alias bottom = Self(7)
-  alias absbottom = Self(8)
-
-  fn __eq__(self, other: Alignment) -> Bool:
-    return self._value == other._value
-
-#----------------------------------------------------------------------------------------------------------------------
-
-@value
-struct Font:
-  var bold: Bool
-  var color: String
-  var size: Int
-  var typeface: String
-
-  fn __init__(mut self):
-    self.bold = False
-    self.color = ""
-    self.size = 0
-    self.typeface = ""
-
-  fn assign(mut self, source: Font):
-    self.bold = source.bold
-    self.color = source.color
-    self.size = source.size
-    self.typeface = source.typeface
-
-#----------------------------------------------------------------------------------------------------------------------
+from alignment import Alignment
 
 @value
 struct Html(Copyable, Stringable, Writable):
   var default_cell_height: Int
-  var font_bold: Bool
-  var font: Font
   var lines: List[String]
 
   fn __str__(self) -> String:
@@ -59,16 +19,11 @@ struct Html(Copyable, Stringable, Writable):
 
   fn __init__(out self):
     self.default_cell_height = 0
-    self.font_bold = False
-    self.font = Font()
     self.lines = List[String]()
     self.lines.append("<!DOCTYPE html>")
 
   fn __copyinit__(out self, existing: Self):
     self.default_cell_height = existing.default_cell_height
-    self.font_bold = existing.font_bold
-    self.font = Font()
-    self.font.assign(existing.font)
     self.lines = List[String]()
     for line in existing.lines:
       self.lines.append(line[])
@@ -98,28 +53,12 @@ struct Html(Copyable, Stringable, Writable):
   fn add_line(mut self, text: String):
     self.lines.append(text)
 
-  fn body(mut self, back_color: String = "", back_image: String = "",
-          on_load: String = "", link: String = "", vlink: String = "",
-          alink: String = "", text_color: String = "") -> ref[self] Self:
-    var body_str = String("<body ")
-
-    if back_color != "":
-      body_str += 'bgcolor="' + back_color + '" '
-    if back_image != "":
-      body_str += 'background="' + back_image + '" '
+  fn body(mut self, on_load: String = "") -> ref[self] Self:
+    # Only keep onload as it's a behavioral attribute, not styling
     if on_load != "":
-      body_str += 'onload="' + on_load + '" '
-    if link != "":
-      body_str += 'link="' + link + '" '
-    if vlink != "":
-      body_str += 'vlink="' + vlink + '" '
-    if alink != "":
-      body_str += 'alink="' + alink + '" '
-    if text_color != "":
-      body_str += 'text="' + text_color + '" '
-
-    body_str = str(body_str.strip()) + ">"
-    self.add(body_str)
+      self.add("<body onload=\"" + on_load + "\">")
+    else:
+      self.add("<body>")
     return self
 
   # - API Helper functions --------------------------------------------------------------------------------------------
@@ -149,15 +88,15 @@ struct Html(Copyable, Stringable, Writable):
 
   # - Fluent API ------------------------------------------------------------------------------------------------------
 
-  fn end_body(mut self) -> ref[self] Self:
+  fn end_body(mut self):
     self.add("</body>")
-    return self
 
   fn html(mut self, country: String = "en") -> ref[self] Self:
     self.add('<html lang="' + country + '">')
     return self
 
   fn end_html(mut self) -> ref[self] Self:
+    self.end_body()
     self.add("</html>")
     return self
 
@@ -207,7 +146,7 @@ struct Html(Copyable, Stringable, Writable):
     return self
 
   fn html_head(mut self, title: String, style: Style = Style()) -> ref[self] Self:
-    var _i = self.html().head(style).title(title).end_head()
+    var _i = self.html().head(style).title(title).end_head().body()
     return self
 
   fn horz_rule(mut self) -> ref[self] Self:
@@ -233,13 +172,6 @@ struct Html(Copyable, Stringable, Writable):
 
   fn end_data(mut self) -> ref[self] Self:
     self.add("</td>")
-    return self
-
-  fn end_font(mut self) -> ref[self] Self:
-    self.add("</font>")
-    if self.font_bold:
-      self.add("</b>")
-      self.font_bold = False
     return self
 
   fn end_form(mut self) -> ref[self] Self:
@@ -335,7 +267,7 @@ struct Html(Copyable, Stringable, Writable):
     return self
 
   fn text_area(mut self, name: String, value: String,
-               cols: Int, rows: Int, font_number: Int = 0) -> ref[self] Self:
+               cols: Int, rows: Int) -> ref[self] Self:
 
     var text_area_str = String()
     text_area_str += '<textarea name="' + name + '" cols="' + str(cols) + '" rows="' + str(rows) + '">'
@@ -426,23 +358,6 @@ struct Html(Copyable, Stringable, Writable):
 
   fn script(mut self, script: String) -> ref[self] Self:
     self.add("<script>", script, "</script>")
-    return self
-
-  # Need a neat way to get multi line scripts into the script tag
-
-  fn set_font(mut self, typeface: String, size: Int = 0, color_name: String = "", bold: Bool = False) -> ref[self] Self:
-    var font_str = String("<font ")
-    if color_name != "":
-      font_str += 'color="' + color_name + '" '
-    if size != 0:
-      font_str += 'size="' + str(size) + '" '
-    if typeface != "":
-      font_str += 'face="' + typeface + '" '
-    font_str = str(font_str.strip()) + ">"
-    if bold:
-      font_str += "<b>"
-      self.font_bold = True
-    self.add(font_str)
     return self
 
   fn row(mut self) -> ref[self] Self:
