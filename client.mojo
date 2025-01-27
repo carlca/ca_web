@@ -3,6 +3,7 @@ from html import Html
 from style import Style, FontUnit
 from colors import Colors
 from benchmark import keep
+from googlefont import GoogleFont
 
 @value
 struct PageHandler(HTTPService):
@@ -27,7 +28,8 @@ struct PageHandler(HTTPService):
       color(Colors.blueviolet).
       background_color(Colors.yellow)
     style.h1().
-      font_family("Times New Roman, serif").
+      # font_family("Times New Roman, serif").
+      font_family(GoogleFont.).
       color(Colors.red).
       background_color(Colors.lightblue)
     style.h2().
