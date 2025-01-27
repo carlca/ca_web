@@ -140,7 +140,10 @@ struct Html(Copyable, Stringable, Writable):
   fn head(mut self, style: Style = Style()) -> ref[self] Self:
     self.add("<head>", "<meta charset='utf-8'>")
     # self.add("<link href=\"https://fonts.googleapis.com/css\" rel=\"stylesheet\">")
-    self.add("<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css?family=Tangerine\" >")
+    # self.add("<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css?family=Tangerine\" >")
+    if style.google_fonts:
+      var piped_fonts = "|".join(style.google_fonts)
+      self.add("<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css?family=" + piped_fonts + "\">")
     if style.lines.size > 0:
       self.add("<style>")
       self.add(style.out())

@@ -1,6 +1,7 @@
 from colors import Colors
 from fontunit import FontUnit
 from fontsize import FontSize
+from googlefonts import GoogleFonts
 
 @value
 struct Style(Copyable):
@@ -82,10 +83,14 @@ struct Style(Copyable):
   fn font_family(mut self, font_families: String) raises -> ref[self] Self:
     var font_list = font_families.split(",")
     var fonts = String()
+    var google_fonts = GoogleFonts()
     for font in font_list:
       var stripped_font = str(font[].strip())
       font_res = "'" + stripped_font + "'" if " " in stripped_font else stripped_font
       fonts += font_res + ", "
+      if google_fonts.is_googlefont(stripped_font):
+        if stripped_font not in self.google_fonts:
+          self.google_fonts.append(stripped_font)
     self.add("  font-family: " + fonts[0:len(fonts) - 2] + ";")
     return self
 

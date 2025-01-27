@@ -3,7 +3,7 @@ from html import Html
 from style import Style, FontUnit
 from colors import Colors
 from benchmark import keep
-from googlefont import GoogleFont
+from googlefonts import GoogleFonts
 
 @value
 struct PageHandler(HTTPService):
@@ -24,19 +24,18 @@ struct PageHandler(HTTPService):
 
     _ = style.p().
       font_family("arial").
-      font_size(23, FontUnit.PX).
       color(Colors.blueviolet).
       background_color(Colors.yellow)
     _ = style.h1().
-      font_family(GoogleFont.Tangerine).
+      font_family(GoogleFonts.Audiowide).
       color(Colors.red).
       background_color(Colors.lightblue)
     _ = style.h2().
-      font_family("Times New Roman, serif").
+      font_family(GoogleFonts.Sofia).
       color(Colors.goldenrod).
       background_color(Colors.lightgreen)
     _ = style.h3().
-      font_family("Times New Roman, serif").
+      font_family(GoogleFonts.Trirong).
       color(Colors.green).
       background_color(Colors.lightcoral)
     _ = style.body()

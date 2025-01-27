@@ -1,10 +1,10 @@
 @value
-struct GoogleFont:
+struct GoogleFonts:
   var _value: String
   var google_fonts: List[String]
   var aliases: List[String]
 
-  fn __init__(out self, value: String):
+  fn __init__(out self, value: String = ""):
     self._value = value
     self.google_fonts = List[String]()
     self.aliases = List[String]()
@@ -1823,6 +1823,9 @@ struct GoogleFont:
   fn add(mut self, addee: StringLiteral):
     self.google_fonts.append(addee)
 
+  fn is_googlefont(self, font_name: String) -> Bool:
+    return font_name in self.google_fonts
+
   alias ABeeZee = "ABeeZee"
   alias ADLaMDisplay = "ADLaM Display"
   alias AROneSans = "AR One Sans"
@@ -3632,7 +3635,7 @@ fn make_alias(font_name: String) -> String:
                   .replace(")", "")
 
 fn main():
-  var gf = GoogleFont("")
+  var gf = GoogleFonts()
   print("aliases.count = " + str(len(gf.aliases)))
   print("google_fonts.count = " + str(len(gf.google_fonts)))
   for i in range(len(gf.google_fonts)):
