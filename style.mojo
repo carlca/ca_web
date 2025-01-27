@@ -96,45 +96,15 @@ struct Style(Copyable):
     self.add("  font-size: " + size_str + ";")
     return self
 
-  # fn font_family(mut self, font_families: String) raises -> ref[self] Self:
-  #   var font_list = font_families.split(",")
-  #   var fonts = String()
-  #   for font in font_list:
-  #     var stripped_font = str(font[].strip())
-  #     if not stripped_font.startswith("'"):  # If not already quoted
-  #       # Assume it's a Google font and add to tracking list
-  #       self.google_fonts.append(stripped_font)
-  #     font_res = "'" + stripped_font + "'" if " " in stripped_font else stripped_font
-  #     fonts += font_res + ", "
-  #   self.add("  font-family: " + fonts[0:len(fonts) - 2] + ";")
-  #   return self
-
-  # fn get_google_fonts_link(self) -> String:
-  #   if len(self.google_fonts) == 0:
-  #     return ""
-  #   var link = "  <link href=\"https://fonts.googleapis.com/css2?"
-  #   for font in self.google_fonts:
-  #     link += "family=" + font[].replace(" ", "+") + "&"
-  #   link += "display=swap\" rel=\"stylesheet\">"
-  #   return link
-
   fn out(self) -> String:
     var result = String()
     # Add Google Fonts link if any fonts were used
     # if len(self.google_fonts) > 0:
     #   result += self.get_google_fonts_link() + "\n"
-    result += "  <style>\n"
+    # result += "  <style>\n"
     for line in self.lines:
       result += line[] + "\n"
     if self.current_selector:  # Close final block
       result += "  }\n"
-    result += "  </style>"
+    # result += "  </style>"
     return result
-
-  # fn out(self) -> String:
-  #   var result = String()
-  #   for line in self.lines:
-  #     result += line[] + "\n"
-  #   if self.current_selector: # Close final block
-  #     result += "}"
-  #   return result

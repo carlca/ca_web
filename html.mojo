@@ -139,6 +139,8 @@ struct Html(Copyable, Stringable, Writable):
 
   fn head(mut self, style: Style = Style()) -> ref[self] Self:
     self.add("<head>", "<meta charset='utf-8'>")
+    # self.add("<link href=\"https://fonts.googleapis.com/css\" rel=\"stylesheet\">")
+    self.add("<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css?family=Tangerine\" >")
     if style.lines.size > 0:
       self.add("<style>")
       self.add(style.out())
@@ -411,62 +413,6 @@ struct Html(Copyable, Stringable, Writable):
 
   # - Utility functions -----------------------------------------------------------------------------------------------
 
-  # fn prettify(mut self):
-  #   var indent_level: Int = 0
-  #   var pretty_lines = List[String]()
-  #   var indent_space = "  "
-
-  #   # Tags that need special handling
-  #   var standalone_tags = List("<img", "<input", "<br", "<hr", "<meta")
-  #   var same_level_tags = List("<h1", "<h2", "<h3", "<h4", "<h5", "<h6", "<p")
-
-  #   for line in self.lines:
-  #     var trimmed = line[].strip()
-  #     if len(trimmed) == 0:
-  #       continue
-
-  #     # Special handling for DOCTYPE - no indentation
-  #     if trimmed.startswith("<!DOCTYPE") or trimmed.startswith("<!doctype"):
-  #       pretty_lines.append(trimmed)
-  #       continue
-
-  #     # Special handling for </head> to reset indentation
-  #     if trimmed == "</head>":
-  #       indent_level = 1  # Reset to base level after head section
-
-  #     # Normal closing tag handling
-  #     elif trimmed.startswith("</"):
-  #       indent_level = max(0, indent_level - 1)
-
-  #     # Check if it's a standalone tag
-  #     var is_standalone = False
-  #     for tag in standalone_tags:
-  #       if trimmed.startswith((tag[])):
-  #         is_standalone = True
-  #         break
-
-  #     # Create the indented line with current indent_level
-  #     var pretty_line = String("")
-  #     for _ in range(indent_level):
-  #       pretty_line += indent_space
-  #     pretty_line += trimmed
-  #     pretty_lines.append(pretty_line)
-
-  #     # Increase indent for opening tags AFTER adding the line
-  #     if trimmed.startswith("<") and not trimmed.startswith("</") and not is_standalone:
-  #       var should_indent = True
-  #       for tag in same_level_tags:
-  #         if trimmed.startswith((tag[])):
-  #           should_indent = False
-  #           break
-  #       if should_indent:
-  #         indent_level += 1
-
-  #   # Replace the original lines with our prettified lines
-  #   self.lines = pretty_lines
-
-  #   return self
-
   fn prettify(mut self) raises:
     var indent_level: Int = 0
     var pretty_lines = List[String]()
@@ -477,7 +423,7 @@ struct Html(Copyable, Stringable, Writable):
     var js_content = List[String]()
 
     # Tags that need special handling
-    var standalone_tags = List("<img", "<input", "<br", "<hr", "<meta")
+    var standalone_tags = List("<img", "<input", "<br", "<hr", "<meta", "<link")
     var same_level_tags = List("<h1", "<h2", "<h3", "<h4", "<h5", "<h6", "<p")
 
     for line in self.lines:

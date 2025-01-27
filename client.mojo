@@ -22,42 +22,40 @@ struct PageHandler(HTTPService):
     var page = Html()
     var style = Style()
 
-    style.p().
+    _ = style.p().
       font_family("arial").
       font_size(23, FontUnit.PX).
       color(Colors.blueviolet).
       background_color(Colors.yellow)
-    style.h1().
-      # font_family("Times New Roman, serif").
-      font_family(GoogleFont.).
+    _ = style.h1().
+      font_family(GoogleFont.Tangerine).
       color(Colors.red).
       background_color(Colors.lightblue)
-    style.h2().
+    _ = style.h2().
       font_family("Times New Roman, serif").
       color(Colors.goldenrod).
       background_color(Colors.lightgreen)
-    style.h3().
+    _ = style.h3().
       font_family("Times New Roman, serif").
       color(Colors.green).
       background_color(Colors.lightcoral)
-    style.body()
+    _ = style.body()
       .background_color(Colors.azure)
       .font_size(16, FontUnit.PX)
       .font_family("Arial, sans-serif")
       .color(Colors.darkblue)
-      .end_body()
 
-    page.html_head("lightspeed_http and ca_web test", style)
-    page.para("", "datetime")
-    page.script('let datetime = new Date(); document.getElementById("datetime").innerHTML = datetime;')
-    page.h1("Test Heading 1").h2("Test Heading 2").h3("Test Heading 3").h4("Test Heading 4").h5("Test Heading 5").h6("Test Heading 6")
-    page.image("/earlyspring.png")
-    page.para(page.lorem())
-    page.para(page.post_modern())
-    page.input_text("password", "1234go", 23, 23)
-    page.input_text("password", "1234go", 23, 23, True)
-    page.end_html()
-    page.prettify()
+    _ = page.html_head("lightspeed_http and ca_web test", style)
+    _ = page.para("", "datetime")
+    _ = page.script('let datetime = new Date(); document.getElementById("datetime").innerHTML = datetime;')
+    _ = page.h1("Test Heading 1").h2("Test Heading 2").h3("Test Heading 3").h4("Test Heading 4").h5("Test Heading 5").h6("Test Heading 6")
+    _ = page.image("/earlyspring.png")
+    _ = page.para(page.lorem())
+    _ = page.para(page.post_modern())
+    _ = page.input_text("password", "1234go", 23, 23)
+    _ = page.input_text("password", "1234go", 23, 23, True)
+    _ = page.end_html()
+    _ = page.prettify()
     return str(page)
 
   fn get_image(mut self, path: String) raises -> String:
