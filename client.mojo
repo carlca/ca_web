@@ -43,12 +43,20 @@ struct PageHandler(HTTPService):
       border_radius(5)
 
     _ = style.p().font_family("arial").color(Colors.blueviolet).background_color(Colors.yellow)
+
     _ = style.h1().
       font_family(GoogleFonts.Audiowide).color(Colors.red).background_color(Colors.lightblue)
     _ = style.h2().
       font_family(GoogleFonts.Sofia).color(Colors.goldenrod).background_color(Colors.lightgreen)
     _ = style.h3().
       font_family(GoogleFonts.Trirong).color(Colors.green).background_color(Colors.lightcoral)
+    _ = style.h4().
+      font_family(GoogleFonts.Aclonica).color(Colors.blueviolet).background_color(Colors.lightblue)
+    _ = style.h5().
+      font_family(GoogleFonts.Bilbo).color(Colors.crimson).background_color(Colors.lightgreen)
+    _ = style.h6().
+      font_family(GoogleFonts.Salsa).color(Colors.darkorange).background_color(Colors.lightcoral)
+
     _ = style.body()
       .background_color(Colors.azure).font_size(16, FontUnit.PX).font_family("Arial, sans-serif").color(Colors.darkblue)
 

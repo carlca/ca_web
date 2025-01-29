@@ -51,26 +51,30 @@ struct Style(Copyable):
     self.add("p {")
     return self
 
-  fn h1(mut self) -> ref[self] Self:
+  fn h(mut self, level: Int) -> ref[self] Self:
     if self.current_selector:
       self.add("}")
-    self.current_selector = "h1"
-    self.add("h1 {")
+    self.current_selector = "h" + str(level)
+    self.add("h" + str(level) + " {")
     return self
+
+  fn h1(mut self) -> ref[self] Self:
+      return self.h(1)
 
   fn h2(mut self) -> ref[self] Self:
-    if self.current_selector:
-      self.add("}")
-    self.current_selector = "h2"
-    self.add("h2 {")
-    return self
+      return self.h(2)
 
   fn h3(mut self) -> ref[self] Self:
-    if self.current_selector:
-      self.add("}")
-    self.current_selector = "h3"
-    self.add("h3 {")
-    return self
+      return self.h(3)
+
+  fn h4(mut self) -> ref[self] Self:
+      return self.h(4)
+
+  fn h5(mut self) -> ref[self] Self:
+      return self.h(5)
+
+  fn h6(mut self) -> ref[self] Self:
+      return self.h(6)
 
   fn color(mut self, color: Colors) -> ref[self] Self:
     self.add("  color: " + str(color) + ";")
