@@ -44,6 +44,8 @@ struct PageHandler(HTTPService):
 
     _ = style.p().font_family("arial").color(Colors.blueviolet).background_color(Colors.yellow)
 
+    _ = style.set_h_scale_factor(2.5)
+
     _ = style.h1().
       font_family(GoogleFonts.Audiowide).color(Colors.red).background_color(Colors.lightblue)
     _ = style.h2().
@@ -55,7 +57,7 @@ struct PageHandler(HTTPService):
     _ = style.h5().
       font_family(GoogleFonts.Bilbo).color(Colors.crimson).background_color(Colors.lightgreen)
     _ = style.h6().
-      font_family(GoogleFonts.Salsa).color(Colors.darkorange).background_color(Colors.lightcoral)
+      font_family(GoogleFonts.Salsa).color(Colors.black).background_color(Colors.lightcoral)
 
     _ = style.body()
       .background_color(Colors.azure).font_size(16, FontUnit.PX).font_family("Arial, sans-serif").color(Colors.darkblue)

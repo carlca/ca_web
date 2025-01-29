@@ -8,11 +8,13 @@ struct Style(Copyable):
   var lines: List[String]
   var current_selector: String
   var google_fonts: List[String]
+  var h_scale_factor: Float64
 
   fn __init__(out self):
     self.lines = List[String]()
     self.current_selector = ""
     self.google_fonts = List[String]()
+    self.h_scale_factor = 0.0
 
   fn add(mut self, text: String):
     self.lines.append(text)
@@ -51,30 +53,38 @@ struct Style(Copyable):
     self.add("p {")
     return self
 
-  fn h(mut self, level: Int) -> ref[self] Self:
+  fn set_h_scale_factor(mut self, factor: Float64) -> ref[self] Self:
+    self.h_scale_factor = factor
+    return self
+
+  fn h(mut self, level: Int, default_size: Float64) raises -> ref[self] Self:
     if self.current_selector:
       self.add("}")
     self.current_selector = "h" + str(level)
     self.add("h" + str(level) + " {")
+    var actual_size = 1.0
+    if self.h_scale_factor > 0.00001:
+      actual_size = default_size * self.h_scale_factor
+    _ = self.font_size(actual_size, FontUnit.PX)
     return self
 
-  fn h1(mut self) -> ref[self] Self:
-      return self.h(1)
+  fn h1(mut self) raises -> ref[self] Self:
+      return self.h(1, 32)
 
-  fn h2(mut self) -> ref[self] Self:
-      return self.h(2)
+  fn h2(mut self) raises -> ref[self] Self:
+      return self.h(2, 24)
 
-  fn h3(mut self) -> ref[self] Self:
-      return self.h(3)
+  fn h3(mut self) raises -> ref[self] Self:
+      return self.h(3, 20.8)
 
-  fn h4(mut self) -> ref[self] Self:
-      return self.h(4)
+  fn h4(mut self) raises -> ref[self] Self:
+      return self.h(4, 16)
 
-  fn h5(mut self) -> ref[self] Self:
-      return self.h(5)
+  fn h5(mut self) raises -> ref[self] Self:
+      return self.h(5, 12.8)
 
-  fn h6(mut self) -> ref[self] Self:
-      return self.h(6)
+  fn h6(mut self) raises -> ref[self] Self:
+      return self.h(6, 11.2)
 
   fn color(mut self, color: Colors) -> ref[self] Self:
     self.add("  color: " + str(color) + ";")
