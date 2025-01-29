@@ -179,6 +179,99 @@ struct Colors(Stringable):
   alias darkslategray = Self("darkslategray", "#2F4F4F", 47, 79, 79)
 
   # Color grouping methods
+
+  @staticmethod
+  fn basic_colors() -> List[Colors]:
+    """Returns a list of basic colors."""
+    return List[Colors](
+      Self.black, Self.silver, Self.gray, Self.white,
+      Self.maroon, Self.red, Self.purple, Self.fuchsia,
+      Self.green, Self.lime, Self.olive, Self.yellow,
+      Self.navy, Self.blue, Self.teal, Self.aqua
+    )
+
+  @staticmethod
+  fn reds() -> List[Colors]:
+    """Returns a list of red colors."""
+    return List[Colors](
+      Self.indianred, Self.lightcoral, Self.salmon, Self.darksalmon,
+      Self.lightsalmon, Self.crimson, Self.darkred, Self.firebrick
+    )
+
+  @staticmethod
+  fn pinks() -> List[Colors]:
+    """Returns a list of pink colors."""
+    return List[Colors](
+      Self.pink, Self.lightpink, Self.hotpink, Self.deeppink,
+      Self.mediumvioletred, Self.palevioletred
+    )
+
+  @staticmethod
+  fn oranges() -> List[Colors]:
+    """Returns a list of orange colors."""
+    return List[Colors](
+      Self.coral, Self.tomato, Self.orangered, Self.darkorange, Self.orange
+    )
+
+  @staticmethod
+  fn yellows() -> List[Colors]:
+    """Returns a list of yellow colors."""
+    return List[Colors](
+      Self.gold, Self.lightyellow, Self.lemonchiffon, Self.lightgoldenrodyellow,
+      Self.papayawhip, Self.moccasin, Self.peachpuff, Self.palegoldenrod,
+      Self.khaki, Self.darkkhaki
+    )
+
+  @staticmethod
+  fn greens() -> List[Colors]:
+    """Returns a list of green colors."""
+    return List[Colors](
+      Self.greenyellow, Self.chartreuse, Self.lawngreen, Self.limegreen,
+      Self.palegreen, Self.lightgreen, Self.mediumspringgreen, Self.springgreen,
+      Self.mediumseagreen, Self.seagreen, Self.forestgreen, Self.darkgreen,
+      Self.yellowgreen, Self.olivedrab, Self.darkolivegreen, Self.mediumaquamarine,
+      Self.darkseagreen, Self.lightseagreen, Self.darkcyan
+    )
+
+  @staticmethod
+  fn blues() -> List[Colors]:
+    """Returns a list of blue colors."""
+    return List[Colors](
+      Self.cyan, Self.lightcyan, Self.paleturquoise, Self.aquamarine,
+      Self.turquoise, Self.mediumturquoise, Self.darkturquoise, Self.cadetblue,
+      Self.steelblue, Self.lightsteelblue, Self.powderblue, Self.lightblue,
+      Self.skyblue, Self.lightskyblue, Self.deepskyblue, Self.dodgerblue,
+      Self.cornflowerblue, Self.mediumblue, Self.darkblue, Self.midnightblue
+    )
+
+  @staticmethod
+  fn whites() -> List[Colors]:
+    """Returns a list of white colors."""
+    return List[Colors](
+      Self.snow, Self.honeydew, Self.mintcream, Self.azure, Self.aliceblue,
+      Self.ghostwhite, Self.whitesmoke, Self.seashell, Self.beige, Self.oldlace,
+      Self.floralwhite, Self.ivory, Self.antiquewhite, Self.linen,
+      Self.lavenderblush, Self.mistyrose
+    )
+
+  @staticmethod
+  fn grays() -> List[Colors]:
+    """Returns a list of gray colors."""
+    return List[Colors](
+      Self.gainsboro, Self.lightgray, Self.darkgray, Self.dimgray,
+      Self.slategray, Self.lightslategray, Self.darkslategray
+    )
+
+  @staticmethod
+  fn purples() -> List[Colors]:
+    """Returns a list of purple colors."""
+    return List[Colors](
+      Self.lavender, Self.thistle, Self.plum, Self.violet, Self.orchid,
+      Self.magenta, Self.mediumorchid, Self.mediumpurple, Self.rebeccapurple,
+      Self.blueviolet, Self.darkviolet, Self.darkorchid, Self.darkmagenta,
+      Self.indigo, Self.slateblue, Self.darkslateblue, Self.mediumslateblue
+    )
+
   @staticmethod
   fn warm_colors() -> List[Colors]:
     """Returns a list of warm colors."""

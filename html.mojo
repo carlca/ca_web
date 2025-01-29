@@ -279,28 +279,52 @@ struct Html(Copyable, Stringable, Writable):
     self.add(text_area_str, value, '</textarea>')
     return self
 
+  # fn input_text(mut self, name: String,
+  #               value: String = String(""),
+  #               size: Int = 0,
+  #               max_length: Int = 0,
+  #               password: Bool = False) -> ref[self] Self:
+
+  #   # Extend the type of the input field - https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input
+
+  #   var input_str = String()
+  #   if password:
+  #     input_str += '<input type=password '
+  #   else:
+  #     input_str += '<input type=text '
+
+  #   input_str += self.check_attrib_string("name", name)
+  #   input_str += self.check_attrib_string("value", value)
+  #   input_str += self.check_attrib_int("size", size)
+  #   input_str += self.check_attrib_int("maxlength", max_length)
+
+  #   input_str += '>'
+  #   self.add(input_str)
+  #   return self
+
   fn input_text(mut self, name: String,
-                value: String = String(""),
-                size: Int = 0,
-                max_length: Int = 0,
-                password: Bool = False) -> ref[self] Self:
+                  value: String = String(""),
+                  class_name: String = "",      # Add class_name
+                  size: Int = 0,
+                  max_length: Int = 0,
+                  password: Bool = False) -> ref[self] Self:
 
-    # Extend the type of the input field - https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input
+      var input_str = String()
+      if password:
+        input_str += '<input type=password '
+      else:
+        input_str += '<input type=text '
 
-    var input_str = String()
-    if password:
-      input_str += '<input type=password '
-    else:
-      input_str += '<input type=text '
+      input_str += self.check_attrib_string("name", name)
+      input_str += self.check_attrib_string("value", value)
+      if class_name != "":
+        input_str += 'class="' + class_name + '" '
+      input_str += self.check_attrib_int("size", size)
+      input_str += self.check_attrib_int("maxlength", max_length)
 
-    input_str += self.check_attrib_string("name", name)
-    input_str += self.check_attrib_string("value", value)
-    input_str += self.check_attrib_int("size", size)
-    input_str += self.check_attrib_int("maxlength", max_length)
-
-    input_str += '>'
-    self.add(input_str)
-    return self
+      input_str += '>'
+      self.add(input_str)
+      return self
 
   fn href(mut self, url: String,
           target: String = String(""),
@@ -325,17 +349,40 @@ struct Html(Copyable, Stringable, Writable):
     self.add(href_str)
     return self
 
-  fn image(mut self, image: String, width: Int = 0, height: Int = 0,
-           border: Int = 0, on_click: String = "",
-           align: Alignment = Alignment.left, alt: String = "",
-           end_href: Bool = False) -> ref[self] Self:
+  # fn image(mut self, image: String, width: Int = 0, height: Int = 0,
+  #          border: Int = 0, on_click: String = "",
+  #          align: Alignment = Alignment.left, alt: String = "",
+  #          end_href: Bool = False) -> ref[self] Self:
+  #   var align_str = self.get_alignment(align)
+  #   var img_str = '<img src="' + image + '" '
+  #   if width != 0:
+  #     img_str += 'width="' + str(width) + '" '
+  #   if height != 0:
+  #     img_str += 'height="' + str(height) + '" '
+  #   img_str += 'align="' + align_str + '" ' + 'border="' + str(border) + '" '
+  #   if on_click != "":
+  #     img_str += 'onclick="' + on_click + '" '
+  #   if alt != "":
+  #     img_str += 'alt="' + alt + '" '
+  #   img_str = str(img_str.strip())
+  #   img_str += ">"
+  #   if end_href:
+  #     img_str += "</a>"
+  #   self.add(img_str)
+  #   return self
+
+  fn image(mut self, image: String,
+             class_name: String = "",
+             on_click: String = "",
+             align: Alignment = Alignment.left,
+             alt: String = "",
+             end_href: Bool = False) -> ref[self] Self:
+
     var align_str = self.get_alignment(align)
     var img_str = '<img src="' + image + '" '
-    if width != 0:
-      img_str += 'width="' + str(width) + '" '
-    if height != 0:
-      img_str += 'height="' + str(height) + '" '
-    img_str += 'align="' + align_str + '" ' + 'border="' + str(border) + '" '
+    if class_name != "":
+      img_str += 'class="' + class_name + '" '
+    img_str += 'align="' + align_str + '" '   #  <-- Here is the fix!
     if on_click != "":
       img_str += 'onclick="' + on_click + '" '
     if alt != "":

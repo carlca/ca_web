@@ -94,22 +94,58 @@ struct Style(Copyable):
     self.add("  font-family: " + fonts[0:len(fonts) - 2] + ";")
     return self
 
-  #  Need to add font_names and google_fonts
-
   fn font_size(mut self, size: Float64, unit: FontUnit) raises -> ref[self] Self:
     var size_str = str(size) + unit.value
     self.add("  font-size: " + size_str + ";")
     return self
 
+  fn image_style(mut self, class_name: String) -> ref[self] Self:
+    if self.current_selector:
+      self.add("}")
+    self.current_selector = "." + class_name
+    self.add("." + class_name + " {")
+    return self
+
+  fn input_style(mut self, class_name: String) -> ref[self] Self:
+    if self.current_selector:
+      self.add("}")
+    self.current_selector = "." + class_name
+    self.add("." + class_name + " {")
+    return self
+
+  fn width(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
+    var size_str = str(value) + unit.value
+    self.add("  width: " + size_str + ";")
+    return self
+
+  fn height(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
+    var size_str = str(value) + unit.value
+    self.add("  height: " + size_str + ";")
+    return self
+
+  fn border(mut self, value: Int, style: String = "solid", color: Colors = Colors.black ) -> ref[self] Self:
+    self.add("  border: " + str(value) + "px " + style + " " +  str(color) + ";")
+    return self
+
+  fn padding(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
+      var size_str = str(value) + unit.value
+      self.add("  padding: " + size_str + ";")
+      return self
+
+  fn margin(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
+      var size_str = str(value) + unit.value
+      self.add("  margin: " + size_str + ";")
+      return self
+
+  fn border_radius(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
+      var size_str = str(value) + unit.value
+      self.add("  border-radius: " + size_str + ";")
+      return self
+
   fn out(self) -> String:
     var result = String()
-    # Add Google Fonts link if any fonts were used
-    # if len(self.google_fonts) > 0:
-    #   result += self.get_google_fonts_link() + "\n"
-    # result += "  <style>\n"
     for line in self.lines:
       result += line[] + "\n"
     if self.current_selector:  # Close final block
       result += "  }\n"
-    # result += "  </style>"
     return result
