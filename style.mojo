@@ -163,3 +163,6 @@ struct Style(Copyable):
     if self.current_selector:  # Close final block
       result += "  }\n"
     return result
+
+#  Sort out CSS id selector and class selector https://www.w3schools.com/css/css_selectors.asp
+#
