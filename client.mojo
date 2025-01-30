@@ -106,7 +106,7 @@ struct PageHandler(HTTPService):
     _ = style.
       id(id.post_modern).
       font_family("Futura, sans-serif").
-      color(Colors.slategray).
+      color(Colors.gainsboro).
       background_color(Colors.darkblue)
 
     _ = page.html_head("lightspeed_http and ca_web test", style)
