@@ -8,13 +8,13 @@ struct Style(Copyable):
   var lines: List[String]
   var current_selector: String
   var google_fonts: List[String]
-  var h_scale_factor: Float64
+  var h_scale_factor: Float64 # Add scale factor
 
   fn __init__(out self):
     self.lines = List[String]()
     self.current_selector = ""
     self.google_fonts = List[String]()
-    self.h_scale_factor = 0.0
+    self.h_scale_factor = 1.0 # Initialize the default h_scale_factor value
 
   fn add(mut self, text: String):
     self.lines.append(text)
@@ -49,40 +49,32 @@ struct Style(Copyable):
   fn p(mut self, selector: String = "") -> ref[self] Self:
     if self.current_selector:
       self.add("}")
-    if selector != "":
-      if selector.startswith("#"):
-         self.current_selector = selector
-      else:
-        self.current_selector = "." + selector
+    if selector.startswith("#"):
+      self.current_selector = selector
+    elif selector != "":
+      self.current_selector = "." + selector
     else:
-       self.current_selector = "p"
+      self.current_selector = "p"
     self.add(self.current_selector + " {")
     return self
 
   fn p_no_margin(mut self) -> ref[self] Self:
-     self.add("  margin-top: 0px;")
-     self.add("  margin-bottom: 0px;")
-     return self
-
-  fn id(mut self, selector: String) -> ref[self] Self:
-    if self.current_selector:
-      self.add("}")
-    self.current_selector = "#" + selector
-    self.add("#" + selector + " {")
+    self.add("  margin-top: 0px;")
+    self.add("  margin-bottom: 0px;")
     return self
 
-  fn margin_top(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
+  fn margin(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
+      self.add("  margin: " + str(value) + unit.value + ";")
+      return self
+
+  fn margin_top(mut self, value: Float64, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
     var size_str = str(value) + unit.value
     self.add("  margin-top: " + size_str + ";")
     return self
 
-  fn margin_bottom(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
+  fn margin_bottom(mut self, value: Float64, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
     var size_str = str(value) + unit.value
     self.add("  margin-bottom: " + size_str + ";")
-    return self
-
-  fn set_h_scale_factor(mut self, factor: Float64) -> ref[self] Self:
-    self.h_scale_factor = factor
     return self
 
   fn h(mut self, level: Int, default_size: Float64) raises -> ref[self] Self:
@@ -114,6 +106,17 @@ struct Style(Copyable):
   fn h6(mut self) raises -> ref[self] Self:
       return self.h(6, 11.2)
 
+  fn set_h_scale_factor(mut self, factor: Float64) -> ref[self] Self:
+    self.h_scale_factor = factor
+    return self
+
+  fn id(mut self, selector: String) -> ref[self] Self:
+    if self.current_selector:
+      self.add("}")
+    self.current_selector = "#" + selector
+    self.add("#" + selector + " {")
+    return self
+
   fn color(mut self, color: Colors) -> ref[self] Self:
     self.add("  color: " + str(color) + ";")
     return self
@@ -136,9 +139,10 @@ struct Style(Copyable):
     self.add("  font-family: " + fonts[0:len(fonts) - 2] + ";")
     return self
 
+  #  Need to add font_names and google_fonts
+
   fn font_size(mut self, size: Float64, unit: FontUnit) raises -> ref[self] Self:
-    var size_str = str(size) + unit.value
-    self.add("  font-size: " + size_str + ";")
+    self.add("  font-size: " + str(size) + unit.value + ";")
     return self
 
   fn image_style(mut self, class_name: String) -> ref[self] Self:
@@ -156,13 +160,11 @@ struct Style(Copyable):
     return self
 
   fn width(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
-    var size_str = str(value) + unit.value
-    self.add("  width: " + size_str + ";")
+    self.add("  width: " + str(value) + unit.value + ";")
     return self
 
   fn height(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
-    var size_str = str(value) + unit.value
-    self.add("  height: " + size_str + ";")
+    self.add("  height: " + str(value) + unit.value + ";")
     return self
 
   fn border(mut self, value: Int, style: String = "solid", color: Colors = Colors.black ) -> ref[self] Self:
@@ -170,14 +172,18 @@ struct Style(Copyable):
     return self
 
   fn padding(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
-      var size_str = str(value) + unit.value
-      self.add("  padding: " + size_str + ";")
+      self.add("  padding: " + str(value) + unit.value + ";")
       return self
 
-  fn margin(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
+  fn padding_top(mut self, value: Float64, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
       var size_str = str(value) + unit.value
-      self.add("  margin: " + size_str + ";")
+      self.add("  padding-top: " + size_str + ";")
       return self
+
+  fn padding_bottom(mut self, value: Float64, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
+    var size_str = str(value) + unit.value
+    self.add("  padding-bottom: " + size_str + ";")
+    return self
 
   fn border_radius(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
       var size_str = str(value) + unit.value
@@ -191,6 +197,3 @@ struct Style(Copyable):
     if self.current_selector:  # Close final block
       result += "  }\n"
     return result
-
-#  Sort out CSS id selector and class selector https://www.w3schools.com/css/css_selectors.asp
-#

@@ -57,33 +57,38 @@ struct PageHandler(HTTPService):
       color(Colors.blueviolet).
       background_color(Colors.yellow)
 
-    _ = style.set_h_scale_factor(2.5)
+    _ = style.set_h_scale_factor(2)
 
     _ = style.
       h1().
       font_family(GoogleFonts.Audiowide).
       color(Colors.red).
       background_color(Colors.lightblue)
+
     _ = style.
       h2().
       font_family(GoogleFonts.Sofia).
       color(Colors.goldenrod).
       background_color(Colors.lightgreen)
+
     _ = style.
       h3().
       font_family(GoogleFonts.Trirong).
       color(Colors.green).
       background_color(Colors.lightcoral)
+
     _ = style.
       h4().
       font_family(GoogleFonts.Aclonica).
       color(Colors.blueviolet).
       background_color(Colors.lightblue)
+
     _ = style.
       h5().
       font_family(GoogleFonts.Bilbo).
       color(Colors.crimson).
       background_color(Colors.lightgreen)
+
     _ = style.
       h6().
       font_family(GoogleFonts.Salsa).
@@ -102,15 +107,25 @@ struct PageHandler(HTTPService):
       font_family("Times New Roman, serif", ).
       color(Colors.chartreuse).
       background_color(Colors.darkblue).
-      margin_top(0).
-      margin_bottom(0).
+      margin_top(0).margin_bottom(0).
+      padding(10).
       font_size(110, FontUnit.PERCENT)
 
     _ = style.
       id(id.post_modern).
       font_family("Futura, sans-serif").
       color(Colors.gainsboro).
-      background_color(Colors.darkblue)
+      background_color(Colors.darkblue).
+      margin(0).
+      padding(20)
+
+    _ = style.
+      id(id.datetime).
+      color(Colors.darkblue).
+      background_color(Colors.lightblue).
+      margin(0).
+      padding(20).
+      font_size(20, FontUnit.PX)
 
     _ = page.html_head("lightspeed_http and ca_web test", style)
     _ = page.para("", id.datetime)
@@ -123,8 +138,10 @@ struct PageHandler(HTTPService):
       h5(GoogleFonts.Bilbo).
       h6(GoogleFonts.Salsa)
     _ = page.image("/earlyspring.png", Class.round_image)
-    _ = page.para(page.lorem(), id.lorem, 0, 0, 10, 10, 10, 10)
-    _ = page.para(page.post_modern(), id.post_modern, 0, 0, 10, 10, 10, 10)
+    # _ = page.para(page.lorem(), id.lorem, 0, 0, 10, 10, 10, 10)
+    # _ = page.para(page.post_modern(), id.post_modern, 0, 0, 10, 10, 10, 10)
+    _ = page.para(page.lorem(), id.lorem)
+    _ = page.para(page.post_modern(), id.post_modern)
     _ = page.input_text(id.username, "carl", Class.fancy_input, 23, 23, False)
     _ = page.input_text(id.password, "1234go", Class.fancy_input, 23, 23, True)
     _ = page.end_html()

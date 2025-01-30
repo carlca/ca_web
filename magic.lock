@@ -177,7 +177,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/python_abi-3.12-5_cp312.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pytz-2024.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/pyyaml-6.0.2-py312h998013c_2.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/pyzmq-26.2.0-py312hf8a1cbd_3.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/pyzmq-26.2.1-py312hf4875e0_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/re2-2024.07.02-h6589ca4_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/readline-8.2-h92ec313_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/regex-2024.11.6-py312hea69d52_0.conda
@@ -2463,12 +2463,12 @@ packages:
   license_family: MIT
   size: 192148
   timestamp: 1737454886351
-- conda: https://conda.anaconda.org/conda-forge/osx-arm64/pyzmq-26.2.0-py312hf8a1cbd_3.conda
-  sha256: 2e0ca1bb9ab3af5d1f9b38548d65be7097ba0246e7e63c908c9b1323df3f45b5
-  md5: 7bdaa4c2a84b744ef26c8b2ba65c3d0e
+- conda: https://conda.anaconda.org/conda-forge/osx-arm64/pyzmq-26.2.1-py312hf4875e0_0.conda
+  sha256: 70d398b334668dc597d33e27847ede1b0829a639b9c91ee845355e52c86c2293
+  md5: bfbefdb140b546a80827ff7c9d5ac7b8
   depends:
   - __osx >=11.0
-  - libcxx >=17
+  - libcxx >=18
   - libsodium >=1.0.20,<1.0.21.0a0
   - python >=3.12,<3.13.0a0
   - python >=3.12,<3.13.0a0 *_cpython
@@ -2477,9 +2477,8 @@ packages:
   arch: arm64
   platform: osx
   license: BSD-3-Clause
-  license_family: BSD
-  size: 361674
-  timestamp: 1728642457661
+  size: 364649
+  timestamp: 1738271263898
 - conda: https://conda.anaconda.org/conda-forge/osx-arm64/re2-2024.07.02-h6589ca4_2.conda
   sha256: 4d3799c05f8f662922a0acd129d119774760a3281b883603678e128d1cb307fb
   md5: 7a8b4ad8c58a3408ca89d78788c78178
