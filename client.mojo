@@ -101,7 +101,9 @@ struct PageHandler(HTTPService):
       id(id.lorem).
       font_family("Times New Roman, serif", ).
       color(Colors.chartreuse).
-      background_color(Colors.darkblue)
+      background_color(Colors.darkblue).
+      margin_top(0).
+      margin_bottom(0)
 
     _ = style.
       id(id.post_modern).
@@ -120,8 +122,8 @@ struct PageHandler(HTTPService):
       h5(GoogleFonts.Bilbo).
       h6(GoogleFonts.Salsa)
     _ = page.image("/earlyspring.png", Class.round_image)
-    _ = page.para(page.lorem(), id.lorem)
-    _ = page.para(page.post_modern(), id.post_modern)
+    _ = page.para(page.lorem(), id.lorem, 0, 0)
+    _ = page.para(page.post_modern(), id.post_modern, 0, 0)
     _ = page.input_text(id.username, "carl", Class.fancy_input, 23, 23, False)
     _ = page.input_text(id.password, "1234go", Class.fancy_input, 23, 23, True)
     _ = page.end_html()

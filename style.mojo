@@ -30,13 +30,6 @@ struct Style(Copyable):
     self.add("}")
     return self
 
-  fn id(mut self, id: String) -> ref[self] Self:
-    if self.current_selector:
-      self.add("}")
-    self.current_selector = "#" + id
-    self.add("#" + id + " {")
-    return self
-
   fn body_background_image(mut self, url: String) raises -> ref[self] Self:
     self.add("  background-image: url('" + url + "');")
     return self
@@ -53,11 +46,39 @@ struct Style(Copyable):
     self.add("  a:active { color: " + color + "; }")
     return self
 
-  fn p(mut self) -> ref[self] Self:
+  fn p(mut self, selector: String = "") -> ref[self] Self:
     if self.current_selector:
       self.add("}")
-    self.current_selector = "p"
-    self.add("p {")
+    if selector != "":
+      if selector.startswith("#"):
+         self.current_selector = selector
+      else:
+        self.current_selector = "." + selector
+    else:
+       self.current_selector = "p"
+    self.add(self.current_selector + " {")
+    return self
+
+  fn p_no_margin(mut self) -> ref[self] Self:
+     self.add("  margin-top: 0px;")
+     self.add("  margin-bottom: 0px;")
+     return self
+
+  fn id(mut self, selector: String) -> ref[self] Self:
+    if self.current_selector:
+      self.add("}")
+    self.current_selector = "#" + selector
+    self.add("#" + selector + " {")
+    return self
+
+  fn margin_top(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
+    var size_str = str(value) + unit.value
+    self.add("  margin-top: " + size_str + ";")
+    return self
+
+  fn margin_bottom(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
+    var size_str = str(value) + unit.value
+    self.add("  margin-bottom: " + size_str + ";")
     return self
 
   fn set_h_scale_factor(mut self, factor: Float64) -> ref[self] Self:

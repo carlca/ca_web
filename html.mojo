@@ -349,36 +349,27 @@ struct Html(Copyable, Stringable, Writable):
     self.add(img_str)
     return self
 
-  # fn para(mut self, text: String = "", id: String = "") -> ref[self] Self:
-  #   if text == "" and id == "":
-  #     self.add("<p>")
-  #     return self
-  #   elif text == "" and id != "":
-  #     self.add("<p id='" + id + "'/>")
-  #     return self
-  #   elif text != "" and id == "":
-  #     self.add("<p>" + text + "</p>")
-  #     return self
-  #   else:
-  #     self.add("<p id='" + id + "'>" + text + "</p>")
-  #     return self
+  fn para(mut self, text: String = "", id: String = "", margin_top: Float64 = -1.0, margin_bottom: Float64 = -1.0) -> ref[self] Self:
+    var para_str = String("<p ")
+    var style_str = String()
+    if margin_top >= 0.0:
+        style_str += "margin-top: " + str(margin_top) + "px; "
+    if margin_bottom >= 0.0:
+        style_str += "margin-bottom: " + str(margin_bottom) + "px; "
 
-  fn para(mut self, text: String = "", id: String = "", first: Bool = False) -> ref[self] Self:
-      var para_str = String()
-      if first:
-        para_str = "<p class='first-paragraph' "
-      else:
-        para_str = "<p "
+    if style_str != "":
+      para_str += "style='" + str(style_str.strip()) + "' "
 
-      if id != "":
-        para_str += "id='" + id + "' "
-      para_str = str(para_str.strip()) + ">"
-      if text != "":
-          para_str += text + "</p>"
-      else:
-          para_str += "</p>"
-      self.add(para_str)
-      return self
+    if id != "":
+      para_str += "id='" + id + "' "
+
+    para_str = str(para_str.strip()) + ">"
+    if text != "":
+      para_str += text + "</p>"
+    else:
+      para_str += "</p>"
+    self.add(para_str)
+    return self
 
   fn script(mut self, id: String, script: String) -> ref[self] Self:
     self.add("<script>let " + id + " = " + script, "</script>")
