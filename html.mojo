@@ -349,13 +349,27 @@ struct Html(Copyable, Stringable, Writable):
     self.add(img_str)
     return self
 
-  fn para(mut self, text: String = "", id: String = "", margin_top: Float64 = -1.0, margin_bottom: Float64 = -1.0) -> ref[self] Self:
+  fn para(mut self,
+    text: String = "",
+    id: String = "",
+    margin_top: Float64 = -1.0, margin_bottom: Float64 = -1.0,
+    padding_top: Float64 = -1.0, padding_bottom: Float64 = -1.0,
+    padding_left: Float64 = -1.0, padding_right: Float64 = -1.0) -> ref[self] Self:
+
     var para_str = String("<p ")
     var style_str = String()
     if margin_top >= 0.0:
         style_str += "margin-top: " + str(margin_top) + "px; "
     if margin_bottom >= 0.0:
         style_str += "margin-bottom: " + str(margin_bottom) + "px; "
+    if padding_top >= 0.0:
+        style_str += "padding-top: " + str(padding_top) + "px; "
+    if padding_bottom >= 0.0:
+      style_str += "padding-bottom: " + str(padding_bottom) + "px; "
+    if padding_left >= 0.0:
+      style_str += "padding-left: " + str(padding_left) + "px; "
+    if padding_right >= 0.0:
+      style_str += "padding-right: " + str(padding_right) + "px; "
 
     if style_str != "":
       para_str += "style='" + str(style_str.strip()) + "' "
@@ -365,9 +379,9 @@ struct Html(Copyable, Stringable, Writable):
 
     para_str = str(para_str.strip()) + ">"
     if text != "":
-      para_str += text + "</p>"
+        para_str += text + "</p>"
     else:
-      para_str += "</p>"
+        para_str += "</p>"
     self.add(para_str)
     return self
 

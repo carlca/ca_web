@@ -42,7 +42,7 @@ struct PageHandler(HTTPService):
       image_style(Class.round_image).
       width(150).
       height(150).
-      border(1, "solid", Colors.red).
+      border(20, "solid", Colors.darkblue).
       border_radius(75)
 
     _ = style.
@@ -103,7 +103,8 @@ struct PageHandler(HTTPService):
       color(Colors.chartreuse).
       background_color(Colors.darkblue).
       margin_top(0).
-      margin_bottom(0)
+      margin_bottom(0).
+      font_size(110, FontUnit.PERCENT)
 
     _ = style.
       id(id.post_modern).
@@ -122,8 +123,8 @@ struct PageHandler(HTTPService):
       h5(GoogleFonts.Bilbo).
       h6(GoogleFonts.Salsa)
     _ = page.image("/earlyspring.png", Class.round_image)
-    _ = page.para(page.lorem(), id.lorem, 0, 0)
-    _ = page.para(page.post_modern(), id.post_modern, 0, 0)
+    _ = page.para(page.lorem(), id.lorem, 0, 0, 10, 10, 10, 10)
+    _ = page.para(page.post_modern(), id.post_modern, 0, 0, 10, 10, 10, 10)
     _ = page.input_text(id.username, "carl", Class.fancy_input, 23, 23, False)
     _ = page.input_text(id.password, "1234go", Class.fancy_input, 23, 23, True)
     _ = page.end_html()
