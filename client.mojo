@@ -66,12 +66,12 @@ struct PageHandler(HTTPService):
     _ = page.para("", "datetime")
     _ = page.script('let datetime = new Date(); document.getElementById("datetime").innerHTML = datetime;')
     _ = page.
-      h1("Test Heading 1").
-      h2("Test Heading 2").
-      h3("Test Heading 3").
-      h4("Test Heading 4").
-      h5("Test Heading 5").
-      h6("Test Heading 6")
+      h1(GoogleFonts.Audiowide).
+      h2(GoogleFonts.Sofia).
+      h3(GoogleFonts.Trirong).
+      h4(GoogleFonts.Aclonica).
+      h5(GoogleFonts.Bilbo).
+      h6(GoogleFonts.Salsa)
     _ = page.image("/earlyspring.png", Class.round_image)
     _ = page.para(page.lorem())
     _ = page.para(page.post_modern())
