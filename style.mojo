@@ -30,6 +30,13 @@ struct Style(Copyable):
     self.add("}")
     return self
 
+  fn id(mut self, id: String) -> ref[self] Self:
+    if self.current_selector:
+      self.add("}")
+    self.current_selector = "#" + id
+    self.add("#" + id + " {")
+    return self
+
   fn body_background_image(mut self, url: String) raises -> ref[self] Self:
     self.add("  background-image: url('" + url + "');")
     return self

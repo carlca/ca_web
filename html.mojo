@@ -363,8 +363,8 @@ struct Html(Copyable, Stringable, Writable):
       self.add("<p id='" + id + "'>" + text + "</p>")
       return self
 
-  fn script(mut self, script: String) -> ref[self] Self:
-    self.add("<script>", script, "</script>")
+  fn script(mut self, id: String, script: String) -> ref[self] Self:
+    self.add("<script>let " + id + " = " + script, "</script>")
     return self
 
   fn row(mut self) -> ref[self] Self:
