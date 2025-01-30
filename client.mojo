@@ -138,8 +138,6 @@ struct PageHandler(HTTPService):
       h5(GoogleFonts.Bilbo).
       h6(GoogleFonts.Salsa)
     _ = page.image("/earlyspring.png", Class.round_image)
-    # _ = page.para(page.lorem(), id.lorem, 0, 0, 10, 10, 10, 10)
-    # _ = page.para(page.post_modern(), id.post_modern, 0, 0, 10, 10, 10, 10)
     _ = page.para(page.lorem(), id.lorem)
     _ = page.para(page.post_modern(), id.post_modern)
     _ = page.input_text(id.username, "carl", Class.fancy_input, 23, 23, False)
