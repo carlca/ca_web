@@ -23,6 +23,19 @@ struct id:
   alias post_modern = "post_modern"
 
 @value
+struct PostData:
+  var username: String
+  var password: String
+
+  fn __init__(out self):
+    self.username = String()
+    self.password = String()
+
+  fn __init__(out self, username: String, password: String):
+    self.username = username
+    self.password = password
+
+@value
 struct PageHandler(HTTPService):
 
   fn func(mut self, req: HTTPRequest) raises -> HTTPResponse:
@@ -32,13 +45,12 @@ struct PageHandler(HTTPService):
         return OK(self.get_page_html(), "text/html")
       elif req.method == "POST":
         var post_response = PostResponse(String(req.get_body()))
-        print(post_response.dict().__str__())
-        return OK(self.get_page_html(), "text/html")
+        return OK(self.get_page_html(post_response), "text/html")
     if uri.path.endswith(".png"):
       return OK(self.get_image(uri.path), "image/png")
     return NotFound(uri.path)
 
-  fn get_page_html(mut self) raises -> String:
+  fn get_page_html(mut self, post_response: PostResponse = PostResponse()) raises -> String:
     var page = Html()
     var style = Style()
 
@@ -149,8 +161,12 @@ struct PageHandler(HTTPService):
     _ = page.input_text(id.username, "carl", Class.fancy_input, 23, 23, False)
     _ = page.input_text(id.password, "1234go", Class.fancy_input, 23, 23, True)
     _ = page.add('<input type="submit" value="Submit">')
-    _ = page.end_form()
 
+    var post_data = PostData(post_response.get("username"), post_response.get("password"))
+    _ = page.para("Entered user name: " + post_data.username)
+    _ = page.para("Entered password: " + post_data.password)
+
+    _ = page.end_form()
     _ = page.end_html()
     page.prettify()
     return str(page)

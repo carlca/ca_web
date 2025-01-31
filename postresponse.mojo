@@ -28,11 +28,14 @@ struct PostResponse():
         dict[parts[0]] = parts[1]
     return dict
 
-  fn get(self, key: String) -> String:
-    var dict = self.build_dict()
-    if key in dict:
-      return dict[key]
-    return ""
+  fn get(self, key: String) raises -> String:
+    try:
+      var dict = self.build_dict()
+      if key in dict:
+        return dict[key]
+      return ""
+    except:
+      return ""
 
   fn dict(self) raises -> Dict[String, String]:
     return self.build_dict()
