@@ -4,6 +4,7 @@ from style import Style, FontUnit
 from colors import Colors
 from benchmark import keep
 from googlefonts import GoogleFonts
+from postresponse import PostResponse
 
 @value
 struct Class:
@@ -23,16 +24,19 @@ struct id:
 
 @value
 struct PageHandler(HTTPService):
+
   fn func(mut self, req: HTTPRequest) raises -> HTTPResponse:
     var uri = req.uri
     if uri.path == "/":
-      return OK(self.get_page_html(), "text/html")
+      if req.method == "GET":
+        return OK(self.get_page_html(), "text/html")
+      elif req.method == "POST":
+        var post_response = PostResponse(String(req.get_body()))
+        print(post_response.dict().__str__())
+        return OK(self.get_page_html(), "text/html")
     if uri.path.endswith(".png"):
       return OK(self.get_image(uri.path), "image/png")
     return NotFound(uri.path)
-
-  fn ignore(self, i: Html):
-    pass
 
   fn get_page_html(mut self) raises -> String:
     var page = Html()
@@ -140,8 +144,13 @@ struct PageHandler(HTTPService):
     _ = page.image("/earlyspring.png", Class.round_image)
     _ = page.para(page.lorem(), id.lorem)
     _ = page.para(page.post_modern(), id.post_modern)
+
+    _ = page.form("my_form", "/", "post")
     _ = page.input_text(id.username, "carl", Class.fancy_input, 23, 23, False)
     _ = page.input_text(id.password, "1234go", Class.fancy_input, 23, 23, True)
+    _ = page.add('<input type="submit" value="Submit">')
+    _ = page.end_form()
+
     _ = page.end_html()
     page.prettify()
     return str(page)
