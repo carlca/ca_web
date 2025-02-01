@@ -46,6 +46,7 @@ struct PageHandler(HTTPService):
       if req.method == "GET":
         return OK(self.get_page_html(), "text/html")
       elif req.method == "POST":
+        print(req)
         var post_response = PostResponse(String(req.get_body()))
         return OK(self.get_page_html(post_response), "text/html")
     if uri.path.endswith(".png"):
@@ -166,8 +167,12 @@ struct PageHandler(HTTPService):
     _ = page.end_form()
 
     var post_data = PostData(post_response.get("username"), post_response.get("password"))
-    _ = page.para("Username: " + post_data.username, id.username)
-    _ = page.para("Password: " + post_data.password, id.password)
+    _ = page.para("Username (POST): " + post_data.username, id.username)
+    _ = page.para("Password (POST): " + post_data.password, id.password)
+
+    _ = page.para("Username (DOM): ", id.username_dom)
+    _ = page.para("Password (DOM):", id.password_dom)
+
 
     _ = page.add('<button onclick="updateOutputs()">Update Outputs</button>')
     _ = page.script("updateOutputs",
