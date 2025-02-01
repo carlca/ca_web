@@ -46,7 +46,9 @@ struct PageHandler(HTTPService):
       if req.method == "GET":
         return OK(self.get_page_html(), "text/html")
       elif req.method == "POST":
-        print(req)
+        print("req: HTTPRequest: " + str(req))
+        print("req.get_body(): " + str(req.get_body()))
+        print("req.body_raw: " + String(req.body_raw))
         var post_response = PostResponse(String(req.get_body()))
         return OK(self.get_page_html(post_response), "text/html")
     if uri.path.endswith(".png"):
