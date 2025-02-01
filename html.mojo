@@ -223,7 +223,7 @@ struct Html(Copyable, Stringable, Writable):
     self.add("</u>")
     return self
 
-  fn form(mut self, name: String, action: String, method: String = "post") -> ref[self] Self:
+  fn form(mut self, name: String = "form", action: String = "/", method: String = "post") -> ref[self] Self:
     var form_str = String("<form name=")
     form_str += name + " action=" + action + " method=" + method + ">"
     self.add(form_str)

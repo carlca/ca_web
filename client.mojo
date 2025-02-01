@@ -171,7 +171,7 @@ struct PageHandler(HTTPService):
     _ = page.para(page.lorem(), id.lorem)
     _ = page.para(page.post_modern(), id.post_modern)
 
-    _ = page.form("form", "/", "post")
+    _ = page.form()
     _ = page.input_text(id.username, "carl", Class.fancy_input, 23, 23, False)
     _ = page.input_text(id.password, "1234go", Class.fancy_input, 23, 23, True)
     _ = page.add('<input type="submit" value="Submit">')
