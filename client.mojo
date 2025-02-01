@@ -151,7 +151,15 @@ struct PageHandler(HTTPService):
 
     _ = page.html_head("lightspeed_http and ca_web test", style)
     _ = page.para("", id.datetime)
-    _ = page.script(id.datetime, 'new Date(); document.getElementById("datetime").innerHTML = datetime;')
+    # _ = page.script(id.datetime, 'new Date(); document.getElementById("datetime").innerHTML = datetime;')
+    _ = page.script("updateTime",
+    """
+        function updateTime() {
+            var datetime = new Date();
+            document.getElementById('datetime').innerHTML = datetime;
+        }
+        setInterval(updateTime, 1000);
+    """)
     _ = page.
       h1(GoogleFonts.Audiowide).
       h2(GoogleFonts.Sofia).
@@ -182,8 +190,8 @@ struct PageHandler(HTTPService):
     """
       function updateOutputs() {
         var form = document.forms.form;
-        document.getElementById('username_dom').innerHTML = form.username.value;
-        document.getElementById('password_dom').innerHTML = form.password.value;
+        document.getElementById('username_dom').innerHTML += form.username.value;
+        document.getElementById('password_dom').innerHTML += form.password.value;
       }
     """)
 
