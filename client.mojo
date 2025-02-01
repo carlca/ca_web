@@ -18,6 +18,8 @@ struct Class:
 struct id:
   alias username = "username"
   alias password = "password"
+  alias username_dom = "username_dom"
+  alias password_dom = "password_dom"
   alias datetime = "datetime"
   alias lorem = "lorem"
   alias post_modern = "post_modern"
@@ -157,16 +159,28 @@ struct PageHandler(HTTPService):
     _ = page.para(page.lorem(), id.lorem)
     _ = page.para(page.post_modern(), id.post_modern)
 
-    _ = page.form("my_form", "/", "post")
+    _ = page.form("form", "/", "post")
     _ = page.input_text(id.username, "carl", Class.fancy_input, 23, 23, False)
     _ = page.input_text(id.password, "1234go", Class.fancy_input, 23, 23, True)
     _ = page.add('<input type="submit" value="Submit">')
+    _ = page.end_form()
 
     var post_data = PostData(post_response.get("username"), post_response.get("password"))
-    _ = page.para("Entered user name: " + post_data.username)
-    _ = page.para("Entered password: " + post_data.password)
+    _ = page.para("Username: " + post_data.username, id.username)
+    _ = page.para("Password: " + post_data.password, id.password)
 
-    _ = page.end_form()
+    _ = page.add('<button onclick="updateOutputs()">Update Outputs</button>')
+    _ = page.script("updateOutputs",
+    """
+      function updateOutputs() {
+        var form = document.forms.form;
+        var username_value = form.username.value;
+        var password_value = form.password.value;
+        document.getElementById('username_span').innerHTML = username_value;
+        document.getElementById('password_span').innerHTML = password_value;
+      }
+    """)
+
     _ = page.end_html()
     page.prettify()
     return str(page)
