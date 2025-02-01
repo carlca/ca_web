@@ -303,6 +303,17 @@ struct Html(Copyable, Stringable, Writable):
     self.add(input_str)
     return self
 
+  fn submit(mut self, value: String = "") -> ref[self] Self:
+    var submit_str = String()
+    submit_str += '<input type=submit '
+    if value != "":
+      submit_str += 'value=' + value + ' '
+    else:
+      submit_str += 'value=Submit'
+    submit_str += '>'
+    self.add(submit_str)
+    return self
+
   fn href(mut self, url: String,
     target: String = String(""),
     on_mouse_over: String = String(""),
