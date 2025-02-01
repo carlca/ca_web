@@ -5,6 +5,7 @@ from colors import Colors
 from benchmark import keep
 from googlefonts import GoogleFonts
 from postresponse import PostResponse
+from collections.string import StringSlice
 
 @value
 struct Class:
@@ -46,9 +47,9 @@ struct PageHandler(HTTPService):
       if req.method == "GET":
         return OK(self.get_page_html(), "text/html")
       elif req.method == "POST":
-        print("req: HTTPRequest: " + str(req))
-        print("req.get_body(): " + str(req.get_body()))
-        print("req.body_raw: " + String(req.body_raw))
+        # var body_slice = str(StringSlice(unsafe_from_utf8=req.body_raw))
+        # var body_repr = repr[String](body_slice)
+        # print(body_repr)
         var post_response = PostResponse(String(req.get_body()))
         return OK(self.get_page_html(post_response), "text/html")
     if uri.path.endswith(".png"):
@@ -181,10 +182,8 @@ struct PageHandler(HTTPService):
     """
       function updateOutputs() {
         var form = document.forms.form;
-        var username_value = form.username.value;
-        var password_value = form.password.value;
-        document.getElementById('username_span').innerHTML = username_value;
-        document.getElementById('password_span').innerHTML = password_value;
+        document.getElementById('username_dom').innerHTML = form.username.value;
+        document.getElementById('password_dom').innerHTML = form.password.value;
       }
     """)
 
