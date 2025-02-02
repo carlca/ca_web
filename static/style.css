@@ -1,0 +1,82 @@
+.round_image {
+  width: 150px;
+  height: 150px;
+  border: 20px solid darkblue;
+  border-radius: 75px;
+}
+.fancy_input {
+  padding: 10px;
+  margin: 5px;
+  border: 2px dotted blue;
+  border-radius: 5px;
+}
+p {
+  font-family: arial;
+  color: blueviolet;
+  background-color: yellow;
+}
+h1 {
+  font-size: 64.0px;
+  font-family: Audiowide;
+  color: red;
+  background-color: lightblue;
+}
+h2 {
+  font-size: 48.0px;
+  font-family: Sofia;
+  color: goldenrod;
+  background-color: lightgreen;
+}
+h3 {
+  font-size: 41.6px;
+  font-family: Trirong;
+  color: green;
+  background-color: lightcoral;
+}
+h4 {
+  font-size: 32.0px;
+  font-family: Aclonica;
+  color: blueviolet;
+  background-color: lightblue;
+}
+h5 {
+  font-size: 25.6px;
+  font-family: Bilbo;
+  color: crimson;
+  background-color: lightgreen;
+}
+h6 {
+  font-size: 22.4px;
+  font-family: Salsa;
+  color: black;
+  background-color: lightcoral;
+}
+body {
+  background-color: azure;
+  font-size: 16.0px;
+  font-family: Arial, sans-serif;
+  color: darkblue;
+}
+#lorem {
+  font-family: 'Times New Roman', serif;
+  color: chartreuse;
+  background-color: darkblue;
+  margin-top: 0.0px;
+  margin-bottom: 0.0px;
+  padding: 10px;
+  font-size: 110.0%;
+}
+#post_modern {
+  font-family: Futura, sans-serif;
+  color: gainsboro;
+  background-color: darkblue;
+  margin: 0px;
+  padding: 20px;
+}
+#datetime {
+  color: darkblue;
+  background-color: lightblue;
+  margin: 0px;
+  padding: 0px;
+  font-size: 20.0px;
+  }

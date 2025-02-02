@@ -54,7 +54,6 @@ struct Html(Copyable, Stringable, Writable):
     self.lines.append(text)
 
   fn body(mut self, on_load: String = "") -> ref[self] Self:
-    # Only keep onload as it's a behavioral attribute, not styling
     if on_load != "":
       self.add("<body onload=\"" + on_load + "\">")
     else:
@@ -137,10 +136,8 @@ struct Html(Copyable, Stringable, Writable):
     self.add_heading(6, text)
     return self
 
-  fn head(mut self, style: Style = Style()) -> ref[self] Self:
+  fn head(mut self, css_file_name: String = "", style: Style = Style()) -> ref[self] Self:
     self.add("<head>", "<meta charset='utf-8'>")
-    # self.add("<link href=\"https://fonts.googleapis.com/css\" rel=\"stylesheet\">")
-    # self.add("<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css?family=Tangerine\" >")
     if style.google_fonts:
       var piped_fonts = "|".join(style.google_fonts)
       self.add("<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css?family=" + piped_fonts + "\">")
@@ -148,10 +145,12 @@ struct Html(Copyable, Stringable, Writable):
       self.add("<style>")
       self.add(style.out())
       self.add("</style>")
+    elif css_file_name != "":
+      self.add("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + css_file_name + "\">")
     return self
 
-  fn html_head(mut self, title: String, style: Style = Style()) -> ref[self] Self:
-    var _i = self.html().head(style).title(title).end_head().body()
+  fn html_head(mut self, title: String, css_file_name: String = "", style: Style = Style()) -> ref[self] Self:
+    _ = self.html().head(css_file_name, style).title(title).end_head().body()
     return self
 
   fn horz_rule(mut self) -> ref[self] Self:

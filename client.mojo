@@ -47,14 +47,24 @@ struct PageHandler(HTTPService):
       if req.method == "GET":
         return OK(self.get_page_html(), "text/html")
       elif req.method == "POST":
-        # var body_slice = str(StringSlice(unsafe_from_utf8=req.body_raw))
-        # var body_repr = repr[String](body_slice)
-        # print(body_repr)
         var post_response = PostResponse(String(req.get_body()))
         return OK(self.get_page_html(post_response), "text/html")
     if uri.path.endswith(".png"):
       return OK(self.get_image(uri.path), "image/png")
+    if uri.path.endswith(".css"):
+      print(self.get_css(uri.path))
+      return OK(self.get_css(uri.path), "text/css")
     return NotFound(uri.path)
+
+  fn get_css(mut self, path: String) raises -> String:
+    var file_name = path.split("/")[-1]
+    with open("static/" + file_name, "r") as f:
+      return f.read_bytes()
+
+  fn get_image(mut self, path: String) raises -> String:
+    var file_name = path.split("/")[-1]
+    with open("static/" + file_name, "r") as f:
+      return f.read_bytes()
 
   fn get_page_html(mut self, post_response: PostResponse = PostResponse()) raises -> String:
     var page = Html()
@@ -146,10 +156,18 @@ struct PageHandler(HTTPService):
       color(Colors.darkblue).
       background_color(Colors.lightblue).
       margin(0).
-      padding(20).
+      padding(0).
       font_size(20, FontUnit.PX)
 
-    _ = page.html_head("lightspeed_http and ca_web test", style)
+    var use_static_css = False
+
+    if use_static_css:
+      _ = style.save_to_file("static/style.css")
+      _ = style.clear()
+      _ = page.html_head("lightspeed_http and ca_web test", "/style.css", style)
+    else:
+      _ = page.html_head("lightspeed_http and ca_web test", "", style)
+
     _ = page.para("", id.datetime)
     _ = page.script("updateTime",
     """
@@ -204,11 +222,6 @@ struct PageHandler(HTTPService):
     _ = page.end_html()
     page.prettify()
     return str(page)
-
-  fn get_image(mut self, path: String) raises -> String:
-    var file_name = path.split("/")[-1]
-    with open("static/" + file_name, "r") as f:
-      return f.read_bytes()
 
 fn main() raises:
   var server = Server()

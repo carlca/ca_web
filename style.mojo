@@ -186,9 +186,21 @@ struct Style(Copyable):
     return self
 
   fn border_radius(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
-      var size_str = str(value) + unit.value
-      self.add("  border-radius: " + size_str + ";")
-      return self
+    var size_str = str(value) + unit.value
+    self.add("  border-radius: " + size_str + ";")
+    return self
+
+  fn save_to_file(self, file_name: String) raises:
+    try:
+      with open(file_name, "w") as f:
+        f.write(self.out())
+    except e:
+      raise Error(String("Error writing CSS file: {}").format(e))
+
+  fn clear(mut self) -> ref[self] Self:
+    self.lines.clear()
+    self.current_selector = ""
+    return self
 
   fn out(self) -> String:
     var result = String()
