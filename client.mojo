@@ -217,7 +217,6 @@ struct PageHandler(HTTPService):
     # one block for "var form = document.forms.form;"
     # another block for "document.getElementById('username_dom').innerHTML += form.username.value;"
     # and so on...
-    # Need to be able to save a style to a `style.css` file, and load it into the page.
 
     _ = page.end_html()
     page.prettify()
