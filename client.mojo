@@ -151,7 +151,6 @@ struct PageHandler(HTTPService):
 
     _ = page.html_head("lightspeed_http and ca_web test", style)
     _ = page.para("", id.datetime)
-    # _ = page.script(id.datetime, 'new Date(); document.getElementById("datetime").innerHTML = datetime;')
     _ = page.script("updateTime",
     """
         function updateTime() {
