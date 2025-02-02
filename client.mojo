@@ -212,10 +212,10 @@ struct PageHandler(HTTPService):
       }
     """)
 
-    # Need to JS enum with script names.
+    # Need to have JS enum with script names.
     # Need the ability to build JS scripts by chaining blocks...
-    # one block for "var form = document.forms.form;"
-    # another block for "document.getElementById('username_dom').innerHTML += form.username.value;"
+    # One block for "var form = document.forms.form;"
+    # Another block for "document.getElementById('username_dom').innerHTML += form.username.value;"
     # and so on...
 
     _ = page.end_html()
