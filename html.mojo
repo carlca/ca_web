@@ -1,6 +1,7 @@
 from colors import *
 from style import Style
 from alignment import Alignment
+from script import Script
 
 @value
 struct Html(Copyable, Stringable, Writable):
@@ -369,6 +370,10 @@ struct Html(Copyable, Stringable, Writable):
     else:
       para_str += "</p>"
     self.add(para_str)
+    return self
+
+  fn script(mut self, script: Script) -> ref[self] Self:
+    self.add("<script>", script.out(), "</script>")
     return self
 
   fn script(mut self, id: String, script: String) -> ref[self] Self:

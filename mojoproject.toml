@@ -3,6 +3,7 @@ authors = ["Carl Caulkett <carl.caulkett@gmail.com>"]
 channels = [
   "conda-forge",
   # Having to use Stable for now as the nightly build is giving issues... https://discord.com/channels/1087530497313357884/1119100298456215572/1332085767866023987
+  # "https://conda.modular.com/max-nightly",
   "https://conda.modular.com/max",
   "https://repo.prefix.dev/mojo-community",
 ]

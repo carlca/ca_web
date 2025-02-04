@@ -6,6 +6,7 @@ from benchmark import keep
 from googlefonts import GoogleFonts
 from postresponse import PostResponse
 from collections.string import StringSlice
+from script import Script
 
 @value
 struct Class:
@@ -140,7 +141,7 @@ struct PageHandler(HTTPService):
       color(Colors.chartreuse).
       background_color(Colors.darkblue).
       margin_top(0).margin_bottom(0).
-      padding(10).
+      padding_top(10).padding_bottom(2).padding_left(10).padding_right(10).
       font_size(110, FontUnit.PERCENT)
 
     _ = style.
@@ -149,7 +150,7 @@ struct PageHandler(HTTPService):
       color(Colors.gainsboro).
       background_color(Colors.darkblue).
       margin(0).
-      padding(20)
+      padding_top(2).padding_bottom(10).padding_left(10).padding_right(10)
 
     _ = style.
       id(id.datetime).
@@ -169,14 +170,8 @@ struct PageHandler(HTTPService):
       _ = page.html_head("lightspeed_http and ca_web test", "", style)
 
     _ = page.para("", id.datetime)
-    _ = page.script("updateTime",
-    """
-        function updateTime() {
-            var datetime = new Date();
-            document.getElementById('datetime').innerHTML = datetime;
-        }
-        setInterval(updateTime, 1000);
-    """)
+    _ = page.script(Script(id.datetime).update_time())
+
     _ = page.
       h1(GoogleFonts.Audiowide).
       h2(GoogleFonts.Sofia).

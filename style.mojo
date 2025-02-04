@@ -185,6 +185,16 @@ struct Style(Copyable):
     self.add("  padding-bottom: " + size_str + ";")
     return self
 
+  fn padding_left(mut self, value: Float64, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
+    var size_str = str(value) + unit.value
+    self.add("  padding-left: " + size_str + ";")
+    return self
+
+  fn padding_right(mut self, value: Float64, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
+    var size_str = str(value) + unit.value
+    self.add("  padding-right: " + size_str + ";")
+    return self
+
   fn border_radius(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
     var size_str = str(value) + unit.value
     self.add("  border-radius: " + size_str + ";")
