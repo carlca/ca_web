@@ -198,6 +198,9 @@ struct PageHandler(HTTPService):
 
     _ = page.button("Update Outputs", "updateOutputs()")
     # _ = page.button("Update Outputs", Script.update_dom((id.username, value), (id.password, value)))
+    #
+    # update_dom method needs a variadic set of tuple arguments, each tuple containing the id and value to be updated.
+    #
 
     # _ = page.add('<button onclick="updateOutputs()">Update Outputs</button>')
     _ = page.script("updateOutputs",
