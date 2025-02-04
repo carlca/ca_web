@@ -380,6 +380,17 @@ struct Html(Copyable, Stringable, Writable):
     self.add("<script>let " + id + " = " + script, "</script>")
     return self
 
+  fn button(mut self, text: String, on_click: String = "") -> ref[self] Self:
+    var button_str = String()
+    button_str += '<button type="button" '
+    if on_click != "":
+      button_str += 'onclick="' + on_click + '" '
+    button_str += '>'
+    button_str += text
+    button_str += '</button>'
+    self.add(button_str)
+    return self
+
   fn row(mut self) -> ref[self] Self:
     self.add("<tr>")
     return self

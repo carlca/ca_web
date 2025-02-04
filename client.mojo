@@ -20,8 +20,8 @@ struct Class:
 struct id:
   alias username = "username"
   alias password = "password"
-  alias username_dom = "username_dom"
-  alias password_dom = "password_dom"
+  alias username_post = "username_post"
+  alias password_post = "password_post"
   alias datetime = "datetime"
   alias lorem = "lorem"
   alias post_modern = "post_modern"
@@ -190,20 +190,22 @@ struct PageHandler(HTTPService):
     _ = page.end_form()
 
     var post_data = PostData(post_response.get("username"), post_response.get("password"))
-    _ = page.para("Username (POST): " + post_data.username, id.username)
-    _ = page.para("Password (POST): " + post_data.password, id.password)
+    _ = page.para("Username (POST): " + post_data.username, id.username_post)
+    _ = page.para("Password (POST): " + post_data.password, id.password_post)
 
-    _ = page.para("Username (DOM): ", id.username_dom)
-    _ = page.para("Password (DOM):", id.password_dom)
+    _ = page.para("Username (DOM): ", id.username)
+    _ = page.para("Password (DOM):", id.password)
 
+    _ = page.button("Update Outputs", "updateOutputs()")
+    # _ = page.button("Update Outputs", Script.update_dom((id.username, value), (id.password, value)))
 
-    _ = page.add('<button onclick="updateOutputs()">Update Outputs</button>')
+    # _ = page.add('<button onclick="updateOutputs()">Update Outputs</button>')
     _ = page.script("updateOutputs",
     """
       function updateOutputs() {
         var form = document.forms.form;
-        document.getElementById('username_dom').innerHTML += form.username.value;
-        document.getElementById('password_dom').innerHTML += form.password.value;
+        document.getElementById('username').innerHTML += form.username.value;
+        document.getElementById('password').innerHTML += form.password.value;
       }
     """)
 

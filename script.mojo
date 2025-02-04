@@ -18,6 +18,16 @@ struct Script(Copyable):
     script.lines.append("    setInterval(updateTime, 1000);")
     return script^
 
+  fn update_dom(borrowed self, value: String) -> Self:
+    var script = Script(self.id)
+    script.lines = List[String]()
+    script.lines.append("let updateDom =")
+    script.lines.append("    function updateDom() {")
+    script.lines.append("        var datetime = new Date();")
+    script.lines.append("        document.getElementById('" + self.id + "').innerHTML = " + value + ";")
+    script.lines.append("    }")
+    return script^
+
   fn out(self) -> String:
     var result = String()
     for line in self.lines:
