@@ -372,13 +372,13 @@ struct Html(Copyable, Stringable, Writable):
     self.add(para_str)
     return self
 
-  fn script(mut self, script: Script) -> ref[self] Self:
+  fn script(mut self,mut script: Script) -> ref[self] Self:
     self.add("<script>", script.out(), "</script>")
     return self
 
-  fn script(mut self, id: String, script: String) -> ref[self] Self:
-    self.add("<script>let " + id + " = " + script, "</script>")
-    return self
+  # fn script(mut self, id: String, script: String) -> ref[self] Self:
+  #   self.add("<script>let " + id + " = " + script, "</script>")
+  #   return self
 
   fn button(mut self, text: String, on_click: String = "") -> ref[self] Self:
     var button_str = String()
@@ -447,13 +447,11 @@ struct Html(Copyable, Stringable, Writable):
     var pretty_lines = List[String]()
     var indent_space = "  "
     var in_style = False
-    var in_script = False
     var css_content = List[String]()
-    var js_content = List[String]()
 
     # Tags that need special handling
     var standalone_tags = List("<img", "<input", "<br", "<hr", "<meta", "<link")
-    var same_level_tags = List("<h1", "<h2", "<h3", "<h4", "<h5", "<h6", "<p")
+    var same_level_tags = List("<h1", "<h2", "<h3", "<h4", "<h5", "<h6", "<p", "<button")
 
     for line in self.lines:
       var trimmed = line[].strip()
@@ -475,27 +473,9 @@ struct Html(Copyable, Stringable, Writable):
         pretty_lines.append(indent_space * indent_level + trimmed)
         continue
 
-      # Handle JavaScript content
-      if trimmed.startswith("<script"):
-        in_script = True
-        pretty_lines.append(indent_space * indent_level + trimmed)
-        indent_level += 1
-        continue
-
-      if trimmed == "</script>":
-        in_script = False
-        pretty_lines.extend(self._format_js(js_content, indent_level))
-        js_content = List[String]()
-        indent_level -= 1
-        pretty_lines.append(indent_space * indent_level + trimmed)
-        continue
-
       # Collect CSS/JS content
       if in_style:
         css_content.append(trimmed)
-        continue
-      if in_script:
-        js_content.append(trimmed)
         continue
 
       # Regular HTML formatting
