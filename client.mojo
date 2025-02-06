@@ -202,12 +202,6 @@ struct PageHandler(HTTPService):
       (id.username, post_data.username, True),
       (id.password, post_data.password, True)))
 
-    # Need to have JS enum with script names.
-    # Need the ability to build JS scripts by chaining blocks...
-    # One block for "var form = document.forms.form;"
-    # Another block for "document.getElementById('username_dom').innerHTML += form.username.value;"
-    # and so on...
-
     _ = page.end_html()
     page.prettify()
     return str(page)
