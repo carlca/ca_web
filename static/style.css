@@ -52,26 +52,32 @@ h6 {
   background-color: lightcoral;
 }
 body {
+  color: darkblue;
   background-color: azure;
   font-size: 16.0px;
   font-family: Arial, sans-serif;
-  color: darkblue;
 }
 #lorem {
   font-family: 'Times New Roman', serif;
+  font-size: 110.0%;
   color: chartreuse;
   background-color: darkblue;
   margin-top: 0.0px;
   margin-bottom: 0.0px;
-  padding: 10px;
-  font-size: 110.0%;
+  padding-top: 10.0px;
+  padding-bottom: 2.0px;
+  padding-left: 10.0px;
+  padding-right: 10.0px;
 }
 #post_modern {
   font-family: Futura, sans-serif;
   color: gainsboro;
   background-color: darkblue;
   margin: 0px;
-  padding: 20px;
+  padding-top: 2.0px;
+  padding-bottom: 10.0px;
+  padding-left: 10.0px;
+  padding-right: 10.0px;
 }
 #datetime {
   color: darkblue;

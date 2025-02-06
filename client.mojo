@@ -74,94 +74,57 @@ struct PageHandler(HTTPService):
 
     _ = style.
       image_style(Class.round_image).
-      width(150).
-      height(150).
-      border(20, "solid", Colors.darkblue).
-      border_radius(75)
+      width(150).height(150).
+      border(20, "solid", Colors.darkblue).border_radius(75)
 
     _ = style.
       input_style(Class.fancy_input).
-      padding(10).
-      margin(5).
-      border(2, "dotted", Colors.blue).
-      border_radius(5)
+      padding(10).margin(5).
+      border(2, "dotted", Colors.blue).border_radius(5)
 
     _ = style.p().
-      font_family("arial").
-      color(Colors.blueviolet).
-      background_color(Colors.yellow)
+      font_family("arial").color(Colors.blueviolet).background_color(Colors.yellow)
 
     _ = style.set_h_scale_factor(2)
 
-    _ = style.
-      h1().
-      font_family(GoogleFonts.Audiowide).
-      color(Colors.red).
-      background_color(Colors.lightblue)
+    _ = style.h1().
+      font_family(GoogleFonts.Audiowide).color(Colors.red).background_color(Colors.lightblue)
 
-    _ = style.
-      h2().
-      font_family(GoogleFonts.Sofia).
-      color(Colors.goldenrod).
-      background_color(Colors.lightgreen)
+    _ = style.h2().
+      font_family(GoogleFonts.Sofia).color(Colors.goldenrod).background_color(Colors.lightgreen)
 
-    _ = style.
-      h3().
-      font_family(GoogleFonts.Trirong).
-      color(Colors.green).
-      background_color(Colors.lightcoral)
+    _ = style.h3().
+      font_family(GoogleFonts.Trirong).color(Colors.green).background_color(Colors.lightcoral)
 
-    _ = style.
-      h4().
-      font_family(GoogleFonts.Aclonica).
-      color(Colors.blueviolet).
-      background_color(Colors.lightblue)
+    _ = style.h4().
+      font_family(GoogleFonts.Aclonica).color(Colors.blueviolet).background_color(Colors.lightblue)
 
-    _ = style.
-      h5().
-      font_family(GoogleFonts.Bilbo).
-      color(Colors.crimson).
-      background_color(Colors.lightgreen)
+    _ = style.h5().
+      font_family(GoogleFonts.Bilbo).color(Colors.crimson).background_color(Colors.lightgreen)
 
-    _ = style.
-      h6().
-      font_family(GoogleFonts.Salsa).
-      color(Colors.black).
-      background_color(Colors.lightcoral)
+    _ = style.h6().
+      font_family(GoogleFonts.Salsa).color(Colors.black).background_color(Colors.lightcoral)
 
-    _ = style.
-      body()
-      .background_color(Colors.azure).
-      font_size(16, FontUnit.PX).
-      font_family("Arial, sans-serif").
-      color(Colors.darkblue)
+    _ = style.body().
+      color(Colors.darkblue).background_color(Colors.azure).
+      font_size(16, FontUnit.PX).font_family("Arial, sans-serif")
 
-    _ = style.
-      id(id.lorem).
-      font_family("Times New Roman, serif", ).
-      color(Colors.chartreuse).
-      background_color(Colors.darkblue).
-      margin_top(0).margin_bottom(0).
-      padding_top(10).padding_bottom(2).padding_left(10).padding_right(10).
-      font_size(110, FontUnit.PERCENT)
+    _ = style.id(id.lorem).
+      font_family("Times New Roman, serif", ).font_size(110, FontUnit.PERCENT).
+      color(Colors.chartreuse).background_color(Colors.darkblue).
+      margin_top(0).margin_bottom(0).padding_top(10).padding_bottom(2).padding_left(10).padding_right(10)
 
-    _ = style.
-      id(id.post_modern).
+    _ = style.id(id.post_modern).
       font_family("Futura, sans-serif").
-      color(Colors.gainsboro).
-      background_color(Colors.darkblue).
-      margin(0).
-      padding_top(2).padding_bottom(10).padding_left(10).padding_right(10)
+      color(Colors.gainsboro).background_color(Colors.darkblue).
+      margin(0).padding_top(2).padding_bottom(10).padding_left(10).padding_right(10)
 
-    _ = style.
-      id(id.datetime).
-      color(Colors.darkblue).
-      background_color(Colors.lightblue).
-      margin(0).
-      padding(0).
+    _ = style.id(id.datetime).
+      color(Colors.darkblue).background_color(Colors.lightblue).
+      margin(0).padding(0).
       font_size(20, FontUnit.PX)
 
-    var use_static_css = False
+    var use_static_css = True
 
     if use_static_css:
       _ = style.save_to_file("static/style.css")
@@ -174,12 +137,7 @@ struct PageHandler(HTTPService):
     _ = page.script(Script(id.datetime).update_time())
 
     _ = page.
-      h1(GoogleFonts.Audiowide).
-      h2(GoogleFonts.Sofia).
-      h3(GoogleFonts.Trirong).
-      h4(GoogleFonts.Aclonica).
-      h5(GoogleFonts.Bilbo).
-      h6(GoogleFonts.Salsa)
+      h1(GoogleFonts.Audiowide).h2(GoogleFonts.Sofia).h3(GoogleFonts.Trirong).h4(GoogleFonts.Aclonica).h5(GoogleFonts.Bilbo).h6(GoogleFonts.Salsa)
     _ = page.image("/earlyspring.png", Class.round_image)
     _ = page.para(page.lorem(), id.lorem)
     _ = page.para(page.post_modern(), id.post_modern)
