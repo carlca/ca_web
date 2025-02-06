@@ -14,24 +14,15 @@ struct Script(Copyable):
   fn update_time(borrowed self) -> Self:
     var script = Script(self.id)
     script.lines = List[String]()
-    script.add("let updateTime = function updateTime() {")
+    script.add("let updateTime = function() {")
     script.add("   var datetime = new Date();")
     script.add("   document.getElementById('" + self.id + "').innerHTML = datetime")
     script.add("}")
     script.add("setInterval(updateTime, 1000);")
     return script^
 
-  # fn update_dom(borrowed self, value: String, append: Bool = False) -> Self:
-  #   var script = Script(self.id)
-  #   script.lines = List[String]()
-  #   script.add("let updateDom = function updateDom() {")
-  #   var operator = '+=' if append else '='
-  #   script.add("    document.getElementById('" + self.id + "').innerHTML " + operator + " \"" + value + "\";")
-  #   script.add('}')
-  #   return script^
-
-  @staticmethod
-  fn update_dom(*args: Tuple[StringLiteral, String, Bool]) -> String:
+  fn update_dom(borrowed self, *args: Tuple[StringLiteral, String, Bool]) -> Self:
+    var script = Script(self.id)
     var function_calls = List[String]()
     for arg in args:
       var id = str(arg[][0])
@@ -40,13 +31,11 @@ struct Script(Copyable):
       var operator = '+=' if append else '='
       var call = "document.getElementById('" + id + "').innerHTML " + operator + " '" + value + "';"
       function_calls.append(call)
-    var all_script = "\n".join(function_calls)
-    var function_definition = """
-      let updateAll = function() {
-          """ + all_script + """
-      }
-    """
-    return function_definition
+    script.add("let updateDom = function() {")
+    for call in function_calls:
+      script.add("   " + call[])
+    script.add("}")
+    return script^
 
   fn out(self) -> String:
     var result = String()

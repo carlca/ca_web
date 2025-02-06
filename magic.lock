@@ -8,7 +8,7 @@ environments:
     packages:
       osx-arm64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/aiohappyeyeballs-2.4.4-pyhd8ed1ab_1.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/aiohttp-3.11.11-py312h998013c_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/aiohttp-3.11.12-py312h998013c_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/aiosignal-1.3.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/annotated-types-0.7.0-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/anyio-4.8.0-pyhd8ed1ab_0.conda
@@ -231,9 +231,9 @@ packages:
   license_family: PSF
   size: 19351
   timestamp: 1733332029649
-- conda: https://conda.anaconda.org/conda-forge/osx-arm64/aiohttp-3.11.11-py312h998013c_0.conda
-  sha256: 446f078e7a7b892894d7f4851a278b7834ffb4f5632313646a55c3abe13690d4
-  md5: c69c904691364cfb27d15aa7153e9c29
+- conda: https://conda.anaconda.org/conda-forge/osx-arm64/aiohttp-3.11.12-py312h998013c_0.conda
+  sha256: a4d04942bdeedbb7260b41eafb0302b6f8c3799f578c4389984c084a8fc34c16
+  md5: 7675cee14b7e7d9ccf17ad37a4bdf53a
   depends:
   - __osx >=11.0
   - aiohappyeyeballs >=2.3.0
@@ -250,8 +250,8 @@ packages:
   platform: osx
   license: MIT AND Apache-2.0
   license_family: Apache
-  size: 875711
-  timestamp: 1734597277258
+  size: 889104
+  timestamp: 1738823362301
 - conda: https://conda.anaconda.org/conda-forge/noarch/aiosignal-1.3.2-pyhd8ed1ab_0.conda
   sha256: 7de8ced1918bbdadecf8e1c1c68237fe5709c097bd9e0d254f4cad118f4345d0
   md5: 1a3981115a398535dbe3f6d5faae3d36

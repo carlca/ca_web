@@ -372,19 +372,15 @@ struct Html(Copyable, Stringable, Writable):
     self.add(para_str)
     return self
 
-  fn script(mut self,mut script: Script) -> ref[self] Self:
+  fn script(inout self, script: Script) -> ref[self] Self:
     self.add("<script>", script.out(), "</script>")
     return self
-
-  # fn script(mut self, id: String, script: String) -> ref[self] Self:
-  #   self.add("<script>let " + id + " = " + script, "</script>")
-  #   return self
 
   fn button(mut self, text: String, on_click: String = "") -> ref[self] Self:
     var button_str = String()
     button_str += '<button type="button" '
     if on_click != "":
-      button_str += 'onclick="' + on_click + '" '
+      button_str += 'onclick="' + on_click + '()" '
     button_str += '>'
     button_str += text
     button_str += '</button>'

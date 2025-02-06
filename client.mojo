@@ -25,6 +25,7 @@ struct id:
   alias datetime = "datetime"
   alias lorem = "lorem"
   alias post_modern = "post_modern"
+  alias update_dom = "updateDom"
 
 @value
 struct PostData:
@@ -170,8 +171,7 @@ struct PageHandler(HTTPService):
       _ = page.html_head("lightspeed_http and ca_web test", "", style)
 
     _ = page.para("", id.datetime)
-    var s1 = Script(id.datetime).update_time()
-    _ = page.script(s1)
+    _ = page.script(Script(id.datetime).update_time())
 
     _ = page.
       h1(GoogleFonts.Audiowide).
@@ -197,26 +197,16 @@ struct PageHandler(HTTPService):
     _ = page.para("Username (DOM): ", id.username)
     _ = page.para("Password (DOM): ", id.password)
 
-    # _ = page.button("Update Outputs", "updateDom()")
-    # _ = page.script(Script(id.username).update_dom(post_data.username, True))
-    # _ = page.script(Script(id.password).update_dom(post_data.password, True))
-
-    _ = page.button("Update Outputs", "updateAll()")
-    var s2 = Script("allScript")
-    s2.add(Script.update_dom((id.username, post_data.username, True), (id.password, post_data.password, True)))
-    _ = page.script(s2)
+    _ = page.button("Update Outputs", id.update_dom)
+    _ = page.script(Script(id.update_dom).update_dom(
+      (id.username, post_data.username, True),
+      (id.password, post_data.password, True)))
 
     # Need to have JS enum with script names.
     # Need the ability to build JS scripts by chaining blocks...
     # One block for "var form = document.forms.form;"
     # Another block for "document.getElementById('username_dom').innerHTML += form.username.value;"
     # and so on...
-    #
-    # _ = page.button("Update Outputs", Script.update_dom((id.username, value), (id.password, value)))
-    #
-    # update_dom method needs a variadic set of tuple arguments, each tuple containing the id and value to be updated.
-    #
-
 
     _ = page.end_html()
     page.prettify()
