@@ -171,7 +171,7 @@ struct PageHandler(HTTPService):
     return str(page)
 
 fn main() raises:
-  if not use_netlify
+  if not use_netlify:
     var server = Server()
     var handler = PageHandler()
     server.listen_and_serve("0.0.0.0:8080", handler)
