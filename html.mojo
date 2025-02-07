@@ -504,6 +504,19 @@ struct Html(Copyable, Stringable, Writable):
 
     self.lines = pretty_lines
 
+  fn out(self) -> String:
+    var result = String()
+    for line in self.lines:
+      result += line[] + "\n"
+    return result
+
+  fn save_to_file(self, file_name: String) raises:
+    try:
+      with open(file_name, "w") as f:
+        f.write(self.out())
+    except e:
+      raise Error(String("Error writing HTML file: {}").format(e))
+
   fn _format_css(self, css_lines: List[String], indent_level: Int) raises -> List[String]:
     var formatted = List[String]()
     var current_indent = indent_level

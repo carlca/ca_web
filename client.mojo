@@ -54,7 +54,6 @@ struct PageHandler(HTTPService):
     if uri.path.endswith(".png"):
       return OK(self.get_image(uri.path), "image/png")
     if uri.path.endswith(".css"):
-      print(self.get_css(uri.path))
       return OK(self.get_css(uri.path), "text/css")
     return NotFound(uri.path)
 
@@ -125,11 +124,12 @@ struct PageHandler(HTTPService):
       font_size(20, FontUnit.PX)
 
     var use_static_css = True
+    var use_static_html = True
 
     if use_static_css:
       _ = style.save_to_file("static/style.css")
       _ = style.clear()
-      _ = page.html_head("lightspeed_http and ca_web test", "/style.css", style)
+      _ = page.html_head("lightspeed_http and ca_web test", "style.css", style)
     else:
       _ = page.html_head("lightspeed_http and ca_web test", "", style)
 
@@ -162,6 +162,10 @@ struct PageHandler(HTTPService):
 
     _ = page.end_html()
     page.prettify()
+
+    if use_static_html:
+      page.save_to_file("static/index.html")
+
     return str(page)
 
 fn main() raises:

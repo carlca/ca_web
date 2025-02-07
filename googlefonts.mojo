@@ -1818,7 +1818,6 @@ struct GoogleFonts:
                           .replace("(", "")
                           .replace(")", "")
       self.aliases.append(alias_name)
-      # print("  alias " + alias_name + ' = "' + font[] + '"')
 
   fn add(mut self, addee: StringLiteral):
     self.google_fonts.append(addee)

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset='utf-8'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide|Sofia|Trirong|Aclonica|Bilbo|Salsa">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>lightspeed_http and ca_web test</title>
+  </head>
+  <body>
+    <p id='datetime'></p>
+    <script>
+      let updateTime = function() {
+         var datetime = new Date();
+         document.getElementById('datetime').innerHTML = datetime
+      }
+      setInterval(updateTime, 1000);
+    </script>
+    <h1>Audiowide</h1>
+    <h2>Sofia</h2>
+    <h3>Trirong</h3>
+    <h4>Aclonica</h4>
+    <h5>Bilbo</h5>
+    <h6>Salsa</h6>
+    <img src="/earlyspring.png" class="round_image" align="left">
+    <p id='lorem'>lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diem nonummy nibh euismod tincidunt ut lacreet dolore magna aliguam erat volutpat. ut wisis enim ad minim veniam, quis nostrud exerci tution ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. duis te feugifacilisi. duis autem dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit au gue duis dolore te feugat nulla facilisi. ut wisi enim ad minim veniam, quis nostrud exerci taion ullamcorper suscipit lobortis nisl ut aliquip ex en commodo consequat.</p>
+    <p id='post_modern'>Latin-looking words arranged in nonsensical sentences, set in columns to give the appearance of text on a page. Dummy text is used by the designer to help approximate the look of a page at a stage in the design process before the written text has been received. This way the designer is able, in a very real sense, to shape the material presence of words before they are written and before their meaning is known. Conventionally, due to constraints of time, ability, budget, and habit, the designer is not the author. So conventionally, the student of typography is not encouraged to write (or even read prepared copy) which would waste valuable time spent getting to grips with the mechanics of text layout. Such established working/teaching methods increase the danger of the typographer becoming detached from the meaning of texts. The treatment of copy in purely formal terms, reduced to blocks of texture on a page, has lead to the typographer's obsession with craft and disregard of meaning. Dummy text is text that is not meant to be read, but only looked at; a shape. The choice of Latin is crucial to this function in that it is a dead language. Working with dummy text, the designer only brings into play part of his/her array of tools/skills to convey meaning.</p>
+    <form name=form action=/ method=post>
+      <input type=text name="username" value="carl" class="fancy_input" size="23" maxlength="23" >
+      <input type=password name="password" value="1234go" class="fancy_input" size="23" maxlength="23" >
+      <input type=submit value=Submit>
+    </form>
+    <p id='username_post'>Username (POST): carl</p>
+    <p id='password_post'>Password (POST): 1234go</p>
+    <p id='username'>Username (DOM): </p>
+    <p id='password'>Password (DOM): </p>
+    <button type="button" onclick="updateDom()" >Update Outputs</button>
+    <script>
+      let updateDom = function() {
+         document.getElementById('username').innerHTML += 'carl';
+         document.getElementById('password').innerHTML += '1234go';
+      }
+    </script>
+  </body>
+</html>
