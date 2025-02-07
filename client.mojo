@@ -10,7 +10,7 @@ from script import Script
 
 var use_static_css = True
 var use_static_html = False
-var use_lightbug_http = False
+var use_lightbug_http = True
 
 @value
 struct Class:
