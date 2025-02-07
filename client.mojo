@@ -8,7 +8,9 @@ from postresponse import PostResponse
 from collections.string import StringSlice
 from script import Script
 
-alias use_netlify = True
+var use_static_css = True
+var use_static_html = False
+var use_lightbug_http = False
 
 @value
 struct Class:
@@ -125,9 +127,6 @@ struct PageHandler(HTTPService):
       margin(0).padding(0).
       font_size(20, FontUnit.PX)
 
-    var use_static_css = True
-    var use_static_html = True
-
     if use_static_css:
       _ = style.save_to_file("static/style.css")
       _ = style.clear()
@@ -171,7 +170,8 @@ struct PageHandler(HTTPService):
     return str(page)
 
 fn main() raises:
-  if not use_netlify:
+
+  if use_lightbug_http:
     var server = Server()
     var handler = PageHandler()
     server.listen_and_serve("0.0.0.0:8080", handler)
