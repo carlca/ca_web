@@ -8,6 +8,8 @@ from postresponse import PostResponse
 from collections.string import StringSlice
 from script import Script
 
+alias use_netlify = True
+
 @value
 struct Class:
   alias round_image = "round_image"
@@ -169,6 +171,7 @@ struct PageHandler(HTTPService):
     return str(page)
 
 fn main() raises:
-  var server = Server()
-  var handler = PageHandler()
-  server.listen_and_serve("0.0.0.0:8080", handler)
+  if not use_netlify
+    var server = Server()
+    var handler = PageHandler()
+    server.listen_and_serve("0.0.0.0:8080", handler)
