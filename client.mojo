@@ -8,7 +8,7 @@ from postresponse import PostResponse
 from collections.string import StringSlice
 from script import Script
 
-var use_static_css = True
+var use_static_css = False
 var use_static_html = False
 var use_lightbug_http = True
 
@@ -174,4 +174,5 @@ fn main() raises:
   if use_lightbug_http:
     var server = Server()
     var handler = PageHandler()
-    server.listen_and_serve("0.0.0.0:8080", handler)
+    # server.listen_and_serve("0.0.0.0:8080", handler)
+    server.listen_and_serve("0.0.0.0:10000", handler)    #

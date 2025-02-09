@@ -1,0 +1,5 @@
+docker images
+docker image rm -f <id> <id> <id> ...
+docker build --platform linux/amd64 -t magic-image -f magic-docker/Dockerfile .
+docker tag magic-image ghcr.io/carlca/magic:8.3.517
+docker push ghcr.io/carlca/magic:8.3.517

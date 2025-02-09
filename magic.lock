@@ -197,7 +197,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/tornado-6.4.2-py312hea69d52_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/tqdm-4.67.1-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/traitlets-5.14.3-pyhd8ed1ab_1.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/transformers-4.48.2-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/transformers-4.48.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/typer-0.15.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/typer-slim-0.15.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/typer-slim-standard-0.15.1-hd8ed1ab_0.conda
@@ -2017,6 +2017,7 @@ packages:
   - python >=3.9
   - requests ~=2.7
   license: Apache-2.0
+  license_family: APACHE
   size: 17129
   timestamp: 1738881064907
 - conda: https://conda.anaconda.org/conda-forge/noarch/opentelemetry-exporter-prometheus-1.12.0rc1-pyhd8ed1ab_0.conda
@@ -2051,6 +2052,7 @@ packages:
   - typing-extensions >=3.7.4
   - typing_extensions >=3.7.4
   license: Apache-2.0
+  license_family: APACHE
   size: 77853
   timestamp: 1738855492720
 - conda: https://conda.anaconda.org/conda-forge/noarch/opentelemetry-semantic-conventions-0.51b0-pyh3cfb1c2_0.conda
@@ -2061,6 +2063,7 @@ packages:
   - opentelemetry-api 1.30.0
   - python >=3.9
   license: Apache-2.0
+  license_family: APACHE
   size: 91903
   timestamp: 1738850427906
 - conda: https://conda.anaconda.org/conda-forge/osx-arm64/orc-2.0.3-h0ff2369_2.conda
@@ -2696,9 +2699,9 @@ packages:
   license_family: BSD
   size: 110051
   timestamp: 1733367480074
-- conda: https://conda.anaconda.org/conda-forge/noarch/transformers-4.48.2-pyhd8ed1ab_0.conda
-  sha256: 67b19c3d6befcc538df3e6d8dc7c4a2b6c7e35b7c1666da790cea4166f1b768a
-  md5: 717807c559e9a30fea4850ab8881adcb
+- conda: https://conda.anaconda.org/conda-forge/noarch/transformers-4.48.3-pyhd8ed1ab_0.conda
+  sha256: ac5a319ae590cfba8e02a9dff492ffb5104d06116f9f5c05f572a7aa68c1ce48
+  md5: e209937cde0d5a0b15022c43fdd628fc
   depends:
   - datasets !=2.5.0
   - filelock
@@ -2714,8 +2717,8 @@ packages:
   - tqdm >=4.27
   license: Apache-2.0
   license_family: APACHE
-  size: 3416794
-  timestamp: 1738278628376
+  size: 3415614
+  timestamp: 1738946261210
 - conda: https://conda.anaconda.org/conda-forge/noarch/typer-0.15.1-pyhd8ed1ab_0.conda
   sha256: ef695490e895c2ad552c77ec497b899b09fd4ad4ab07edcf5649f5994cf92a35
   md5: 170a0398946d8f5b454e592672b6fc20
