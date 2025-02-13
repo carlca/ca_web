@@ -140,7 +140,7 @@ struct PageHandler(HTTPService):
 
     _ = page.
       h1(GoogleFonts.Audiowide).h2(GoogleFonts.Sofia).h3(GoogleFonts.Trirong).h4(GoogleFonts.Aclonica).h5(GoogleFonts.Bilbo).h6(GoogleFonts.Salsa)
-    _ = page.image("/earlyspring.png", Class.round_image)
+    _ = page.image("/static/earlyspring.png", Class.round_image)
     _ = page.para(page.lorem(), id.lorem)
     _ = page.para(page.post_modern(), id.post_modern)
 
