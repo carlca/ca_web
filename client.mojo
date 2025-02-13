@@ -173,6 +173,7 @@ struct PageHandler(HTTPService):
 fn main() raises:
   if use_lightbug_http:
     var port = getenv("PORT")
+    print(port)
     if port.strip() == "":
       port = "8080"
     var server = Server()
