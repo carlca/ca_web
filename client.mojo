@@ -9,7 +9,7 @@ from collections.string import StringSlice
 from script import Script
 from os import getenv
 
-var use_static_css = False
+var use_static_css = True
 var use_static_html = False
 var use_lightbug_http = True
 
