@@ -199,7 +199,7 @@ fn main() raises:
   if use_lightbug_http:
     var port = getenv("PORT")
     if port.strip() == "":
-      port = "10000"
+      port = "8080"
     var server = Server()
     var handler = PageHandler()
     var address: String = String("0.0.0.0:{}".format(port)) # Explicitly type address as String
