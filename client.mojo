@@ -73,31 +73,6 @@ struct PageHandler(HTTPService):
       return f.read_bytes()
 
   fn get_page_html(mut self, post_response: PostResponse = PostResponse()) raises -> String:
-    # var page = Html()
-    # var style = Style()
-
-    # _ = style.
-    #   image_style(Class.round_image).
-    #   width(150).height(150).
-    #   border(20, "solid", Colors.darkblue).border_radius(75)
-
-    # if use_static_css:
-    #   _ = style.save_to_file("static/style.css")
-    #   _ = style.clear()
-    #   _ = page.html_head("lightspeed_http and ca_web test", "style.css", style)
-    # else:
-    #   _ = page.html_head("lightspeed_http and ca_web test", "", style)
-
-    # _ = page.image("/static/earlyspring.png", Class.round_image)
-
-    # _ = page.end_html()
-    # page.prettify()
-
-    # if use_static_html:
-    #   page.save_to_file("static/index.html")
-
-    # return str(page)
-
     var page = Html()
     var style = Style()
 
