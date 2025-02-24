@@ -16,6 +16,7 @@ version = "0.1.0"
 default = "magic run mojo client.mojo"
 
 [dependencies]
-max = "=24.6"
-# max = "=25.1"
-lightbug_http = ">=0.1.11"
+# max = "=24.6"
+max = "=25.1"
+# max = "*"
+lightbug_http = "=0.1.13"
