@@ -64,24 +64,24 @@ struct Style(Copyable):
     return self
 
   fn margin(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
-      self.add("  margin: " + str(value) + unit.value + ";")
+      self.add("  margin: " + String(value) + unit.value + ";")
       return self
 
   fn margin_top(mut self, value: Float64, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
-    var size_str = str(value) + unit.value
+    var size_str = String(value) + unit.value
     self.add("  margin-top: " + size_str + ";")
     return self
 
   fn margin_bottom(mut self, value: Float64, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
-    var size_str = str(value) + unit.value
+    var size_str = String(value) + unit.value
     self.add("  margin-bottom: " + size_str + ";")
     return self
 
   fn h(mut self, level: Int, default_size: Float64) raises -> ref[self] Self:
     if self.current_selector:
       self.add("}")
-    self.current_selector = "h" + str(level)
-    self.add("h" + str(level) + " {")
+    self.current_selector = "h" + String(level)
+    self.add("h" + String(level) + " {")
     var actual_size = 1.0
     if self.h_scale_factor > 0.00001:
       actual_size = default_size * self.h_scale_factor
@@ -118,11 +118,11 @@ struct Style(Copyable):
     return self
 
   fn color(mut self, color: Colors) -> ref[self] Self:
-    self.add("  color: " + str(color) + ";")
+    self.add("  color: " + String(color) + ";")
     return self
 
   fn background_color(mut self, color: Colors) -> ref[self] Self:
-    self.add("  background-color: " + str(color) + ";")
+    self.add("  background-color: " + String(color) + ";")
     return self
 
   fn font_family(mut self, font_families: String) raises -> ref[self] Self:
@@ -130,7 +130,7 @@ struct Style(Copyable):
     var fonts = String()
     var google_fonts = GoogleFonts()
     for font in font_list:
-      var stripped_font = str(font[].strip())
+      var stripped_font = String(font[].strip())
       font_res = "'" + stripped_font + "'" if " " in stripped_font else stripped_font
       fonts += font_res + ", "
       if google_fonts.is_googlefont(stripped_font):
@@ -142,7 +142,7 @@ struct Style(Copyable):
   #  Need to add font_names and google_fonts
 
   fn font_size(mut self, size: Float64, unit: FontUnit) raises -> ref[self] Self:
-    self.add("  font-size: " + str(size) + unit.value + ";")
+    self.add("  font-size: " + String(size) + unit.value + ";")
     return self
 
   fn image_style(mut self, class_name: String) -> ref[self] Self:
@@ -160,43 +160,43 @@ struct Style(Copyable):
     return self
 
   fn width(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
-    self.add("  width: " + str(value) + unit.value + ";")
+    self.add("  width: " + String(value) + unit.value + ";")
     return self
 
   fn height(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
-    self.add("  height: " + str(value) + unit.value + ";")
+    self.add("  height: " + String(value) + unit.value + ";")
     return self
 
   fn border(mut self, value: Int, style: String = "solid", color: Colors = Colors.black ) -> ref[self] Self:
-    self.add("  border: " + str(value) + "px " + style + " " +  str(color) + ";")
+    self.add("  border: " + String(value) + "px " + style + " " +  String(color) + ";")
     return self
 
   fn padding(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
-      self.add("  padding: " + str(value) + unit.value + ";")
+      self.add("  padding: " + String(value) + unit.value + ";")
       return self
 
   fn padding_top(mut self, value: Float64, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
-      var size_str = str(value) + unit.value
+      var size_str = String(value) + unit.value
       self.add("  padding-top: " + size_str + ";")
       return self
 
   fn padding_bottom(mut self, value: Float64, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
-    var size_str = str(value) + unit.value
+    var size_str = String(value) + unit.value
     self.add("  padding-bottom: " + size_str + ";")
     return self
 
   fn padding_left(mut self, value: Float64, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
-    var size_str = str(value) + unit.value
+    var size_str = String(value) + unit.value
     self.add("  padding-left: " + size_str + ";")
     return self
 
   fn padding_right(mut self, value: Float64, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
-    var size_str = str(value) + unit.value
+    var size_str = String(value) + unit.value
     self.add("  padding-right: " + size_str + ";")
     return self
 
   fn border_radius(mut self, value: Int, unit: FontUnit = FontUnit.PX) raises -> ref[self] Self:
-    var size_str = str(value) + unit.value
+    var size_str = String(value) + unit.value
     self.add("  border-radius: " + size_str + ";")
     return self
 

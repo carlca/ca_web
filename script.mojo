@@ -3,7 +3,7 @@ struct Script(Copyable):
   var lines: List[String]
   var id: String
 
-  fn __init__(inout self, id: String):
+  fn __init__(mut self, id: String):
     self.lines = List[String]()
     self.id = id
 
@@ -11,7 +11,7 @@ struct Script(Copyable):
     var spaces = " " * 6
     self.lines.append(spaces + text)
 
-  fn update_time(borrowed self) -> Self:
+  fn update_time(read self) -> Self:
     var script = Script(self.id)
     script.lines = List[String]()
     script.add("let updateTime = function() {")
@@ -21,11 +21,11 @@ struct Script(Copyable):
     script.add("setInterval(updateTime, 1000);")
     return script^
 
-  fn update_dom(borrowed self, *args: Tuple[StringLiteral, String, Bool]) -> Self:
+  fn update_dom(read self, *args: Tuple[StringLiteral, String, Bool]) -> Self:
     var script = Script(self.id)
     var function_calls = List[String]()
     for arg in args:
-      var id = str(arg[][0])
+      var id = String(arg[][0])
       var value = arg[][1]
       var append = arg[][2]
       var operator = '+=' if append else '='

@@ -1,22 +1,23 @@
 [project]
 authors = ["Carl Caulkett <carl.caulkett@gmail.com>"]
 channels = [
-  "conda-forge",
-  # Having to use Stable for now as the nightly build is giving issues... https://discord.com/channels/1087530497313357884/1119100298456215572/1332085767866023987
-  # "https://conda.modular.com/max-nightly",
-  "https://conda.modular.com/max",
-  "https://repo.prefix.dev/mojo-community",
+    "conda-forge",
+    "https://conda.modular.com/max",
+    "https://repo.prefix.dev/mojo-community",
 ]
+
 description = "Testing a2svior's lightbug_http web server package"
 name = "ca_web"
 platforms = ["osx-arm64"]
-version = "0.1.0"
+version = "0.2.0"
 
 [tasks]
 default = "magic run mojo client.mojo"
 
 [dependencies]
-# max = "=24.6"
-max = "=25.1"
-# max = "*"
-lightbug_http = "=0.1.13"
+# max = "=25.1.0"
+# max = ">=25.1.0,<26"
+# lightbug_http = "*"
+
+max = "=25.1.0"
+lightbug_http = ">=0.1.15"

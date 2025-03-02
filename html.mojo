@@ -69,9 +69,9 @@ struct Html(Copyable, Stringable, Writable):
 
   fn add_heading(mut self, level: Int, text: String):
     if text != "":
-      self.add("<h" + str(level) + ">" + text + "</h" + str(level) + ">")
+      self.add("<h" + String(level) + ">" + text + "</h" + String(level) + ">")
     else:
-      self.add("<h" + str(level) + ">")
+      self.add("<h" + String(level) + ">")
 
   fn ignore(self, i: Html):
     pass
@@ -83,7 +83,7 @@ struct Html(Copyable, Stringable, Writable):
 
   fn check_attrib_int(self, attrib_name: String, attrib_value: Int) -> String:
     if attrib_value > 0:
-      return attrib_name + '=' + '"' + str(attrib_value) + '" '
+      return attrib_name + '=' + '"' + String(attrib_value) + '" '
     return ""
 
   # - Fluent API ------------------------------------------------------------------------------------------------------
@@ -275,7 +275,7 @@ struct Html(Copyable, Stringable, Writable):
                cols: Int, rows: Int) -> ref[self] Self:
 
     var text_area_str = String()
-    text_area_str += '<textarea name="' + name + '" cols="' + str(cols) + '" rows="' + str(rows) + '">'
+    text_area_str += '<textarea name="' + name + '" cols="' + String(cols) + '" rows="' + String(rows) + '">'
     self.add(text_area_str, value, '</textarea>')
     return self
 
@@ -353,7 +353,7 @@ struct Html(Copyable, Stringable, Writable):
       img_str += 'onclick="' + on_click + '" '
     if alt != "":
       img_str += 'alt="' + alt + '" '
-    img_str = str(img_str.strip())
+    img_str = String(img_str.strip())
     img_str += ">"
     if end_href:
       img_str += "</a>"
@@ -364,7 +364,7 @@ struct Html(Copyable, Stringable, Writable):
     var para_str = String("<p ")
     if id != "":
       para_str += "id='" + id + "' "
-    para_str = str(para_str.strip()) + ">"
+    para_str = String(para_str.strip()) + ">"
     if text != "":
       para_str += text + "</p>"
     else:
@@ -372,7 +372,7 @@ struct Html(Copyable, Stringable, Writable):
     self.add(para_str)
     return self
 
-  fn script(inout self, script: Script) -> ref[self] Self:
+  fn script(mut self, script: Script) -> ref[self] Self:
     self.add("<script>", script.out(), "</script>")
     return self
 
@@ -408,9 +408,9 @@ struct Html(Copyable, Stringable, Writable):
 
     if len(text) == 0:
       var data_str = String()
-      data_str += '<td width="' + str(width) + '" align="' + align_str + '" valign="' + v_align_str + '" '
+      data_str += '<td width="' + String(width) + '" align="' + align_str + '" valign="' + v_align_str + '" '
       if cell_height != 0:
-        data_str += 'height="' + str(cell_height) + '" '
+        data_str += 'height="' + String(cell_height) + '" '
       if len(back_color) > 0:
         data_str += 'bgcolor="' + back_color + '" '
       data_str += ">"
@@ -419,9 +419,9 @@ struct Html(Copyable, Stringable, Writable):
       # Replace underscore with &nbsp;
       var processed_text = text.replace("_", "&nbsp;")
       var data_str = String()
-      data_str += '<td width="' + str(width) + '" align="' + align_str + '" valign="' + v_align_str + '" '
+      data_str += '<td width="' + String(width) + '" align="' + align_str + '" valign="' + v_align_str + '" '
       if cell_height != 0:
-        data_str += 'height="' + str(cell_height) + '" '
+        data_str += 'height="' + String(cell_height) + '" '
       if len(back_color) > 0:
         data_str += 'bgcolor="' + back_color + '" '
       data_str += ">"
@@ -471,12 +471,12 @@ struct Html(Copyable, Stringable, Writable):
 
       # Collect CSS/JS content
       if in_style:
-        css_content.append(trimmed)
+        css_content.append(String(trimmed))
         continue
 
       # Regular HTML formatting
       if trimmed.startswith("<!DOCTYPE") or trimmed.startswith("<!doctype"):
-        pretty_lines.append(trimmed)
+        pretty_lines.append(String(trimmed))
         continue
 
       if trimmed == "</head>":
@@ -524,7 +524,7 @@ struct Html(Copyable, Stringable, Writable):
 
     for line in css_lines:
       var trimmed = line[].strip()
-      css_block += str(trimmed) + " "
+      css_block += String(trimmed) + " "
 
     # Now split the CSS block into rules
     var rules = css_block.split("}")
@@ -534,18 +534,18 @@ struct Html(Copyable, Stringable, Writable):
         continue
 
       # Split into selector and properties
-      var parts = str(rule_trimmed).split("{")
+      var parts = String(rule_trimmed).split("{")
       if len(parts) != 2:
         continue
 
-      var selector = str(parts[0]).strip()
-      var properties = str(parts[1]).strip()
+      var selector = String(parts[0]).strip()
+      var properties = String(parts[1]).strip()
 
       # Add selector
       formatted.append("  " * current_indent + selector + " {")
 
       # Add properties with extra indent
-      for prop in str(properties).split(";"):
+      for prop in String(properties).split(";"):
         var prop_trimmed = prop[].strip()
         if len(prop_trimmed) > 0:
           formatted.append("  " * (current_indent + 1) + prop_trimmed + ";")
@@ -604,7 +604,7 @@ struct Html(Copyable, Stringable, Writable):
     result += "obsession with craft and disregard of meaning. Dummy text is text that is not "
     result += "meant to be read, but only looked at; a shape. The choice of Latin is crucial to "
     result += "this function in that it is a dead language. Working with dummy text, the "
-    result += "designer only brings into play part of his/her array of tools/skills to convey "
+    result += "designer only brings into play part of her array of tools/skills to convey "
     result += "meaning."
     return result
 

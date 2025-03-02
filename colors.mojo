@@ -7,7 +7,7 @@ struct Colors(Stringable):
   var _hex: String
   var _rgb: SIMD[DType.uint8, 4]
 
-  fn __init__(inout self, color_name: String, hex: String, r: UInt8, g: UInt8, b: UInt8):
+  fn __init__(mut self, color_name: String, hex: String, r: UInt8, g: UInt8, b: UInt8):
     self._value = color_name
     self._hex = hex
     self._rgb = SIMD[DType.uint8, 4](r, g, b, 0)
@@ -319,9 +319,9 @@ struct Colors(Stringable):
 
   fn is_dark(self) -> Bool:
     """Determine if the color is considered dark based on luminance."""
-    var r = float(self._rgb[0]) / 255
-    var g = float(self._rgb[1]) / 255
-    var b = float(self._rgb[2]) / 255
+    var r = Float64(self._rgb[0]) / 255
+    var g = Float64(self._rgb[1]) / 255
+    var b = Float64(self._rgb[2]) / 255
     var luminance = (0.299 * r + 0.587 * g + 0.114 * b)
     return luminance < 0.5
 
@@ -348,13 +348,13 @@ struct Colors(Stringable):
     return "rgba(" + String(self._rgb[0]) + "," +
             String(self._rgb[1]) + "," +
             String(self._rgb[2]) + "," +
-            str(alpha) + ")"
+            String(alpha) + ")"
 
   fn to_grayscale(self) -> Self:
     """Convert the color to grayscale."""
-    var r = float(self._rgb[0]) / 255
-    var g = float(self._rgb[1]) / 255
-    var b = float(self._rgb[2]) / 255
+    var r = Float64(self._rgb[0]) / 255
+    var g = Float64(self._rgb[1]) / 255
+    var b = Float64(self._rgb[2]) / 255
     var gray = Float64((0.299 * r + 0.587 * g + 0.114 * b) * 255).cast[DType.uint8]()
     return Self(
         self._value + "_gray",
@@ -367,9 +367,9 @@ struct Colors(Stringable):
     if amount < 0 or amount > 1:
       raise Error("Amount must be between 0 and 1")
 
-    var r = (1 - amount) * float(self._rgb[0]) + amount * float(other._rgb[0])
-    var g = (1 - amount) * float(self._rgb[1]) + amount * float(other._rgb[1])
-    var b = (1 - amount) * float(self._rgb[2]) + amount * float(other._rgb[2])
+    var r = (1 - amount) * Float64(self._rgb[0]) + amount * Float64(other._rgb[0])
+    var g = (1 - amount) * Float64(self._rgb[1]) + amount * Float64(other._rgb[1])
+    var b = (1 - amount) * Float64(self._rgb[2]) + amount * Float64(other._rgb[2])
 
     return Self(
       self._value + "_blended",
@@ -386,9 +386,9 @@ struct Colors(Stringable):
     if amount < 0 or amount > 1:
       raise Error("Amount must be between 0 and 1")
 
-    var r = float(self._rgb[0]) + (255 - float(self._rgb[0])) * amount
-    var g = float(self._rgb[1]) + (255 - float(self._rgb[1])) * amount
-    var b = float(self._rgb[2]) + (255 - float(self._rgb[2])) * amount
+    var r = Float64(self._rgb[0]) + (255 - Float64(self._rgb[0])) * amount
+    var g = Float64(self._rgb[1]) + (255 - Float64(self._rgb[1])) * amount
+    var b = Float64(self._rgb[2]) + (255 - Float64(self._rgb[2])) * amount
 
     return Self(
       self._value + "_lightened",
@@ -405,9 +405,9 @@ struct Colors(Stringable):
     if amount < 0 or amount > 1:
       raise Error("Amount must be between 0 and 1")
 
-    var r = float(self._rgb[0]) * (1 - amount)
-    var g = float(self._rgb[1]) * (1 - amount)
-    var b = float(self._rgb[2]) * (1 - amount)
+    var r = Float64(self._rgb[0]) * (1 - amount)
+    var g = Float64(self._rgb[1]) * (1 - amount)
+    var b = Float64(self._rgb[2]) * (1 - amount)
 
     return Self(
       self._value + "_darkened",
@@ -425,9 +425,9 @@ struct Colors(Stringable):
       raise Error("Degrees must be between -360 and 360")
 
     # Convert to HSL
-    var r = float(self._rgb[0]) / 255
-    var g = float(self._rgb[1]) / 255
-    var b = float(self._rgb[2]) / 255
+    var r = Float64(self._rgb[0]) / 255
+    var g = Float64(self._rgb[1]) / 255
+    var b = Float64(self._rgb[2]) / 255
 
     var max_val = max(max(r, g), b)
     var min_val = min(min(r, g), b)
@@ -466,9 +466,9 @@ struct Colors(Stringable):
   fn get_analogous(self) -> Tuple[Self, Self]:
     """Get analogous colors (colors adjacent on the color wheel)."""
     # Get current HSL values
-    var r = float(self._rgb[0]) / 255
-    var g = float(self._rgb[1]) / 255
-    var b = float(self._rgb[2]) / 255
+    var r = Float64(self._rgb[0]) / 255
+    var g = Float64(self._rgb[1]) / 255
+    var b = Float64(self._rgb[2]) / 255
     var max_val = max(max(r, g), b)
     var min_val = min(min(r, g), b)
     var delta = max_val - min_val
@@ -533,9 +533,9 @@ struct Colors(Stringable):
   fn get_triadic(self) -> Tuple[Self, Self]:
     """Get triadic colors (three evenly spaced colors on the color wheel)."""
     # Get current HSL values
-    var r = float(self._rgb[0]) / 255
-    var g = float(self._rgb[1]) / 255
-    var b = float(self._rgb[2]) / 255
+    var r = Float64(self._rgb[0]) / 255
+    var g = Float64(self._rgb[1]) / 255
+    var b = Float64(self._rgb[2]) / 255
 
     var max_val = max(max(r, g), b)
     var min_val = min(min(r, g), b)
@@ -614,9 +614,9 @@ struct Colors(Stringable):
 
   fn distance_to(self, other: Colors) -> Float64:
     """Calculate Euclidean distance between two colors in RGB space."""
-    var r_diff = float(self._rgb[0]) - float(other._rgb[0])
-    var g_diff = float(self._rgb[1]) - float(other._rgb[1])
-    var b_diff = float(self._rgb[2]) - float(other._rgb[2])
+    var r_diff = Float64(self._rgb[0]) - Float64(other._rgb[0])
+    var g_diff = Float64(self._rgb[1]) - Float64(other._rgb[1])
+    var b_diff = Float64(self._rgb[2]) - Float64(other._rgb[2])
     return sqrt(r_diff * r_diff + g_diff * g_diff + b_diff * b_diff)
 
   fn is_similar_to(self, other: Colors, threshold: Float64 = 30.0) -> Bool:
@@ -625,8 +625,8 @@ struct Colors(Stringable):
 
   fn get_temperature(self) -> Float64:
     """Get color temperature (warm > 0, cool < 0)."""
-    var r = float(self._rgb[0])
-    var b = float(self._rgb[2])
+    var r = Float64(self._rgb[0])
+    var b = Float64(self._rgb[2])
     return (r - b) / (r + b)
 
   fn is_warm(self) -> Bool:
@@ -643,9 +643,9 @@ struct Colors(Stringable):
 
   fn get_relative_luminance(self) -> Float64:
     """Calculate relative luminance for WCAG contrast calculations."""
-    var r = float(self._rgb[0]) / 255.0
-    var g = float(self._rgb[1]) / 255.0
-    var b = float(self._rgb[2]) / 255.0
+    var r = Float64(self._rgb[0]) / 255.0
+    var g = Float64(self._rgb[1]) / 255.0
+    var b = Float64(self._rgb[2]) / 255.0
     r = r/12.92 if r <= 0.03928 else pow((r + 0.055)/1.055, 2.4)
     g = r/12.92 if r <= 0.03928 else pow((g + 0.055)/1.055, 2.4)
     b = r/12.92 if r <= 0.03928 else pow((b + 0.055)/1.055, 2.4)
@@ -668,7 +668,7 @@ struct Colors(Stringable):
     """Generate monochromatic color scheme."""
     var colors = List[Self]()
     for i in range(steps):
-      var amount = float(i) / float(steps - 1)
+      var amount = Float64(i) / Float64(steps - 1)
       colors.append(self.blend(Self.white, amount))
     return colors
 
@@ -685,9 +685,9 @@ struct Colors(Stringable):
 
   fn to_hsl_string(self) -> String:
     """Get color as HSL string."""
-    var r = float(self._rgb[0]) / 255.0
-    var g = float(self._rgb[1]) / 255.0
-    var b = float(self._rgb[2]) / 255.0
+    var r = Float64(self._rgb[0]) / 255.0
+    var g = Float64(self._rgb[1]) / 255.0
+    var b = Float64(self._rgb[2]) / 255.0
 
     var max_val = max(max(r, g), b)
     var min_val = min(min(r, g), b)
@@ -713,9 +713,9 @@ struct Colors(Stringable):
     s *= 100.0
     l *= 100.0
 
-    return "hsl(" + str(h.cast[DType.uint8]()) + "," +
-                    str(s.cast[DType.uint8]()) + "%," +
-                    str(l.cast[DType.uint8]()) + "%)"
+    return "hsl(" + String(h.cast[DType.uint8]()) + "," +
+                    String(s.cast[DType.uint8]()) + "%," +
+                    String(l.cast[DType.uint8]()) + "%)"
 
 fn main():
   ...

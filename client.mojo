@@ -1,4 +1,4 @@
-from lightbug_http import *
+from lightbug_http import HTTPService, HTTPRequest, HTTPResponse, OK, NotFound, Server
 from html import Html
 from style import Style, FontUnit
 from colors import Colors
@@ -9,9 +9,8 @@ from collections.string import StringSlice
 from script import Script
 from os import getenv
 
-var use_static_css = True
+var use_static_css = False
 var use_static_html = False
-var use_lightbug_http = True
 
 @value
 struct Class:
@@ -62,15 +61,20 @@ struct PageHandler(HTTPService):
       return OK(self.get_css(uri.path), "text/css")
     return NotFound(uri.path)
 
+  fn bytes_to_string(mut self, bytes: List[SIMD[DType.uint8, 1]]) -> String:
+    result = bytes
+    result.append(0)
+    return String(buffer=bytes)
+
   fn get_css(mut self, path: String) raises -> String:
     var file_name = path.split("/")[-1]
     with open("static/" + file_name, "r") as f:
-      return f.read_bytes()
+      return self.bytes_to_string(f.read_bytes())
 
   fn get_image(mut self, path: String) raises -> String:
     var file_name = path.split("/")[-1]
     with open("static/" + file_name, "r") as f:
-      return f.read_bytes()
+      return self.bytes_to_string(f.read_bytes())
 
   fn get_page_html(mut self, post_response: PostResponse = PostResponse()) raises -> String:
     var page = Html()
@@ -168,15 +172,14 @@ struct PageHandler(HTTPService):
     if use_static_html:
       page.save_to_file("static/index.html")
 
-    return str(page)
+    return String(page)
 
 fn main() raises:
-  if use_lightbug_http:
-    var port = getenv("PORT")
-    print(port)
-    if port.strip() == "":
-      port = "8080"
-    var server = Server()
-    var handler = PageHandler()
-    var address: String = String("0.0.0.0:{}".format(port)) # Explicitly type address as String
-    server.listen_and_serve(address, handler)
+  var port = getenv("PORT")
+  print(port)
+  if port.strip() == "":
+    port = "8080"
+  var server = Server()
+  var handler = PageHandler()
+  var address: String = String("0.0.0.0:{}".format(port)) # Explicitly type address as String
+  server.listen_and_serve(address, handler)

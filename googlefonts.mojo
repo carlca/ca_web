@@ -1811,7 +1811,7 @@ struct GoogleFonts:
     self.add("Zilla Slab Highlight")
 
     for font in self.google_fonts:
-      var alias_name = str(font).replace(" ", "")
+      var alias_name = String(font).replace(" ", "")
                           .replace("-", "")
                           .replace("'", "")
                           .replace(".", "")
@@ -3635,8 +3635,8 @@ fn make_alias(font_name: String) -> String:
 
 fn main():
   var gf = GoogleFonts()
-  print("aliases.count = " + str(len(gf.aliases)))
-  print("google_fonts.count = " + str(len(gf.google_fonts)))
+  print("aliases.count = " + String(len(gf.aliases)))
+  print("google_fonts.count = " + String(len(gf.google_fonts)))
   for i in range(len(gf.google_fonts)):
     var alias_name = make_alias(gf.google_fonts[i])
     var font_name = gf.google_fonts[i]
