@@ -2,7 +2,7 @@
 authors = ["Carl Caulkett <carl.caulkett@gmail.com>"]
 channels = [
     "conda-forge",
-    "https://conda.modular.com/max",
+    "https://conda.modular.com/max-nightly",
     "https://repo.prefix.dev/mojo-community",
 ]
 
@@ -15,9 +15,5 @@ version = "0.2.0"
 default = "magic run mojo client.mojo"
 
 [dependencies]
-# max = "=25.1.0"
-# max = ">=25.1.0,<26"
-# lightbug_http = "*"
-
 max = "=25.1.0"
-lightbug_http = ">=0.1.15"
+lightbug_http = ">=0.1.16"
