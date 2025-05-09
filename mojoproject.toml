@@ -4,6 +4,7 @@ channels = [
     "conda-forge",
     "https://conda.modular.com/max-nightly",
     "https://repo.prefix.dev/mojo-community",
+    "https://repo.prefix.dev/modular-community",
 ]
 
 description = "Testing a2svior's lightbug_http web server package"
@@ -16,4 +17,4 @@ default = "magic run mojo client.mojo"
 
 [dependencies]
 max = "=25.1.0"
-lightbug_http = ">=0.1.16"
+lightbug_http = "=0.1.16"
