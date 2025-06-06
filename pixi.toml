@@ -13,7 +13,7 @@ platforms = ["osx-arm64"]
 version = "0.2.0"
 
 [tasks]
-default = "magic run mojo client.mojo"
+default = "pixi run mojo client.mojo"
 
 [dependencies]
 max = "=25.1.0"
