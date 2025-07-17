@@ -6,4 +6,4 @@ struct FontSize:
    var unit: FontUnit
 
    fn __str__(self) -> String:
-      return str(self.size) + self.unit.value
+      return String(self.size) + self.unit.value
