@@ -1,4 +1,5 @@
 from lightbug_http import HTTPService, HTTPRequest, HTTPResponse, OK, NotFound, Server
+from lightbug_http.io import Bytes
 from html import Html
 from style import Style, FontUnit
 from colors import Colors
@@ -64,10 +65,10 @@ struct PageHandler(HTTPService):
       with open("static/" + file_name, "r") as f:
          return self.bytes_to_string(f.read_bytes())
 
-   fn get_image(mut self, path: String) raises -> String:
+   fn get_image(mut self, path: String) raises -> Bytes:
       var file_name = path.split("/")[-1]
       with open("static/" + file_name, "r") as f:
-         return self.bytes_to_string(f.read_bytes())
+         return Bytes(f.read_bytes())
 
    fn get_page_html(mut self, post_response: PostResponse) raises -> String:
       var page = Html()
