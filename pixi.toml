@@ -1,21 +1,18 @@
 [workspace]
+name = "ca_web"
+version = "0.1.1"
+description = "Testing a2svior's lightbug_http web server package"
 authors = ["Carl Caulkett <carl.caulkett@gmail.com>"]
+platforms = ["osx-arm64"]
 channels = [
     "conda-forge",
-    "https://conda.modular.com/max-nightly",
-    "https://repo.prefix.dev/mojo-community",
-    "https://repo.prefix.dev/modular-community",
+    "https://conda.modular.com/max",
+    "https://repo.prefix.dev/modular-community"
 ]
-
-description = "Testing a2svior's lightbug_http web server package"
-name = "ca_web"
-platforms = ["osx-arm64"]
-version = "0.2.0"
+preview = ["pixi-build"]
 
 [tasks]
-default = "pixi run mojo client.mojo"
+default = "pixi run mojo -I /Volumes/PRO-G40/Code/Mojo/lightbug_http client.mojo"
 
 [dependencies]
-# max = "=25.1.0"
-# lightbug_http = "=0.1.16"
-lightbug_http = ">=25.4.0"
+mojo = "==0.25.6"

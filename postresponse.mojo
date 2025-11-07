@@ -1,31 +1,26 @@
 from collections.dict import Dict
 
+@fieldwise_init
 struct PostResponse(Copyable, Movable):
    var _raw_data: String
-
-   fn __init__(out self):
-      self._raw_data = String()
-
-   fn __init__(out self, raw_data: String):
-      self._raw_data = raw_data
 
    fn build_dict(self) raises -> Dict[String, String]:
       var dict = Dict[String, String]()
       var raw_data = self._raw_data
       if raw_data == "":
-         return dict
+         return dict^
       if "&" not in raw_data:
-         return dict
+         return dict^
       if raw_data.startswith("\r\n"):
          raw_data = self._raw_data[2:]
       var lines = raw_data.split("&")
-      for line in lines:
-         if "=" not in line[]:
+      for i in range(len(lines)):
+         if "=" not in lines[i]:
             continue
-         var parts = line[].split("=")
+         var parts = lines[i].split("=")
          if len(parts) == 2:
-            dict[parts[0]] = parts[1]
-      return dict
+            dict[String(parts[0])] = String(parts[1])
+      return dict^
 
    fn get(self, key: String) raises -> String:
       try:

@@ -1,7 +1,7 @@
 from fontunit import FontUnit
 
-@value
-struct FontSize:
+@fieldwise_init
+struct FontSize(Copyable, Movable):
    var size: Float64
    var unit: FontUnit
 

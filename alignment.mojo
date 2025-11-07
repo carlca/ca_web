@@ -1,5 +1,5 @@
-@value
-struct Alignment:
+@fieldwise_init
+struct Alignment(Copyable, Movable, ImplicitlyCopyable):
    var _value: UInt8
    alias left = Self(0)
    alias right = Self(1)

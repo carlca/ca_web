@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(/Volumes/PRO-G40/Code/Mojo/ca_web/.pixi/envs/default/bin/mojo:*)",
+      "Bash(/Users/carlcaulkett/.pixi/bin/pixi run:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -1,5 +1,5 @@
 @fieldwise_init
-struct FontUnit:
+struct FontUnit(Copyable, Movable, ImplicitlyCopyable):
    var value: String
 
    alias PX = FontUnit("px")

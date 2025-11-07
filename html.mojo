@@ -4,9 +4,14 @@ from alignment import Alignment
 from script import Script
 
 @fieldwise_init
-struct Html(Copyable, Stringable, Writable):
+struct Html(Copyable, Movable, Stringable):
    var default_cell_height: Int
    var lines: List[String]
+
+   fn __init__(out self):
+      self.default_cell_height = 0
+      self.lines = List[String]()
+      self.lines.append("<!DOCTYPE html>")
 
    fn __str__(self) -> String:
       return "\n".join(self.lines)
@@ -17,17 +22,6 @@ struct Html(Copyable, Stringable, Writable):
          writer.write(self.lines[i])
          if i < len(self.lines) - 1:
             writer.write(delimiter)
-
-   fn __init__(out self):
-      self.default_cell_height = 0
-      self.lines = List[String]()
-      self.lines.append("<!DOCTYPE html>")
-
-   fn __copyinit__(out self, existing: Self):
-      self.default_cell_height = existing.default_cell_height
-      self.lines = List[String]()
-      for line in existing.lines:
-         self.lines.append(line)
 
    fn get_alignment(self, align: Alignment) -> String:
       if align == Alignment.left:
@@ -64,8 +58,8 @@ struct Html(Copyable, Stringable, Writable):
    # - API Helper functions --------------------------------------------------------------------------------------------
 
    fn add(mut self, *text: String):
-      for t in text:
-         self.lines.append(t[])
+      for i in range(len(text)):
+         self.lines.append(text[i])
 
    fn add_heading(mut self, level: Int, text: String):
       if text != "":
@@ -142,7 +136,7 @@ struct Html(Copyable, Stringable, Writable):
       if style.google_fonts:
          var piped_fonts = "|".join(style.google_fonts)
          self.add("<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css?family=" + piped_fonts + "\">")
-      if style.lines.size > 0:
+      if len(style.lines) > 0:
          self.add("<style>")
          self.add(style.out())
          self.add("</style>")
@@ -449,8 +443,8 @@ struct Html(Copyable, Stringable, Writable):
       var standalone_tags = List("<img", "<input", "<br", "<hr", "<meta", "<link")
       var same_level_tags = List("<h1", "<h2", "<h3", "<h4", "<h5", "<h6", "<p", "<button")
 
-      for line in self.lines:
-         var trimmed = line[].strip()
+      for i in range(len(self.lines)):
+         var trimmed = self.lines[i].strip()
          if len(trimmed) == 0:
             continue
 
@@ -486,8 +480,8 @@ struct Html(Copyable, Stringable, Writable):
             indent_level = max(0, indent_level - 1)
 
          var is_standalone = False
-         for tag in standalone_tags:
-            if trimmed.startswith((tag[])):
+         for i in range(len(standalone_tags)):
+            if trimmed.startswith(standalone_tags[i]):
                is_standalone = True
                break
 
@@ -495,19 +489,19 @@ struct Html(Copyable, Stringable, Writable):
 
          if trimmed.startswith("<") and not trimmed.startswith("</") and not is_standalone:
             var should_indent = True
-            for tag in same_level_tags:
-               if trimmed.startswith((tag[])):
+            for i in range(len(same_level_tags)):
+               if trimmed.startswith(same_level_tags[i]):
                   should_indent = False
                   break
             if should_indent:
                indent_level += 1
 
-      self.lines = pretty_lines
+      self.lines = pretty_lines^
 
    fn out(self) -> String:
       var result = String()
       for line in self.lines:
-         result += line[] + "\n"
+         result += line + "\n"
       return result
 
    fn save_to_file(self, file_name: String) raises:
@@ -522,14 +516,14 @@ struct Html(Copyable, Stringable, Writable):
       var current_indent = indent_level
       var css_block = String("")
 
-      for line in css_lines:
-         var trimmed = line[].strip()
+      for i in range(len(css_lines)):
+         var trimmed = css_lines[i].strip()
          css_block += String(trimmed) + " "
 
       # Now split the CSS block into rules
       var rules = css_block.split("}")
-      for rule in rules:
-         var rule_trimmed = rule[].strip()
+      for i in range(len(rules)):
+         var rule_trimmed = rules[i].strip()
          if len(rule_trimmed) == 0:
             continue
 
@@ -545,15 +539,16 @@ struct Html(Copyable, Stringable, Writable):
          formatted.append("   " * current_indent + selector + " {")
 
          # Add properties with extra indent
-         for prop in String(properties).split(";"):
-            var prop_trimmed = prop[].strip()
+         var prop_list = String(properties).split(";")
+         for i in range(len(prop_list)):
+            var prop_trimmed = prop_list[i].strip()
             if len(prop_trimmed) > 0:
                formatted.append("   " * (current_indent + 1) + prop_trimmed + ";")
 
          # Add closing brace
          formatted.append("   " * current_indent + "}")
 
-      return formatted
+      return formatted^
 
    fn _format_js(self, js_lines: List[String], indent_level: Int) -> List[String]:
       var formatted = List[String]()

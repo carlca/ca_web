@@ -1,5 +1,5 @@
 @fieldwise_init
-struct GoogleFonts:
+struct GoogleFonts(Copyable, Movable):
    var _value: String
    var google_fonts: List[String]
    var aliases: List[String]

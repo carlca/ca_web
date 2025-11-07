@@ -1,7 +1,7 @@
 from math import sqrt
 
 @fieldwise_init
-struct Colors(Stringable):
+struct Colors(Copyable, Movable, ImplicitlyCopyable, Stringable):
    """A comprehensive color handling struct supporting CSS4 named colors."""
    var _value: String
    var _hex: String

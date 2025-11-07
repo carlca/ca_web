@@ -4,7 +4,7 @@ from fontsize import FontSize
 from googlefonts import GoogleFonts
 
 @fieldwise_init
-struct Style(Copyable):
+struct Style(Copyable, Movable):
    var lines: List[String]
    var current_selector: String
    var google_fonts: List[String]
@@ -129,8 +129,8 @@ struct Style(Copyable):
       var font_list = font_families.split(",")
       var fonts = String()
       var google_fonts = GoogleFonts()
-      for font in font_list:
-         var stripped_font = String(font[].strip())
+      for i in range(len(font_list)):
+         var stripped_font = String(font_list[i].strip())
          font_res = "'" + stripped_font + "'" if " " in stripped_font else stripped_font
          fonts += font_res + ", "
          if google_fonts.is_googlefont(stripped_font):
@@ -215,7 +215,7 @@ struct Style(Copyable):
    fn out(self) -> String:
       var result = String()
       for line in self.lines:
-         result += line[] + "\n"
+         result += line + "\n"
       if self.current_selector:   # Close final block
          result += "   }\n"
       return result
