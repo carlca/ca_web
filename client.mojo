@@ -9,10 +9,7 @@ from collections.string import StringSlice
 from script import Script
 from os import getenv
 
-var use_static_css = False
-var use_static_html = False
-
-@value
+@fieldwise_init
 struct Class:
    alias round_image = "round_image"
    alias fancy_input = "fancy_input"
@@ -20,7 +17,7 @@ struct Class:
    alias big_button = "big_button"
    alias small_text = "small_text"
 
-@value
+@fieldwise_init
 struct id:
    alias username = "username"
    alias password = "password"
@@ -31,21 +28,25 @@ struct id:
    alias post_modern = "post_modern"
    alias update_dom = "updateDom"
 
-@value
+@fieldwise_init
 struct PostData:
    var username: String
    var password: String
 
-   fn __init__(out self):
-      self.username = String()
-      self.password = String()
+   # fn __init__(out self):
+   #    self.username = String()
+   #    self.password = String()
 
-   fn __init__(out self, username: String, password: String):
-      self.username = username
-      self.password = password
+   # fn __init__(out self, username: String, password: String):
+   #    self.username = username
+   #    self.password = password
 
-@value
+@fieldwise_init
 struct PageHandler(HTTPService):
+
+   fn __init__(out self, use_static_css: Bool = False, use_static_html: Bool = False):
+      self.use_static_css = use_static_css
+      self.use_static_html = use_static_html
 
    fn func(mut self, req: HTTPRequest) raises -> HTTPResponse:
       var uri = req.uri

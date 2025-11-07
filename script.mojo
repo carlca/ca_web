@@ -1,9 +1,9 @@
-@value
-struct Script(Copyable):
+@fieldwise_init
+struct Script(Copyable, Movable):
    var lines: List[String]
    var id: String
 
-   fn __init__(mut self, id: String):
+   fn __init__(out self, id: String):
       self.lines = List[String]()
       self.id = id
 

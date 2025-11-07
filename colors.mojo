@@ -1,13 +1,13 @@
 from math import sqrt
 
-@value
+@fieldwise_init
 struct Colors(Stringable):
    """A comprehensive color handling struct supporting CSS4 named colors."""
    var _value: String
    var _hex: String
    var _rgb: SIMD[DType.uint8, 4]
 
-   fn __init__(mut self, color_name: String, hex: String, r: UInt8, g: UInt8, b: UInt8):
+   fn __init__(out self, color_name: String, hex: String, r: UInt8, g: UInt8, b: UInt8):
       self._value = color_name
       self._hex = hex
       self._rgb = SIMD[DType.uint8, 4](r, g, b, 0)

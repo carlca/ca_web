@@ -3,7 +3,7 @@ from fontunit import FontUnit
 from fontsize import FontSize
 from googlefonts import GoogleFonts
 
-@value
+@fieldwise_init
 struct Style(Copyable):
    var lines: List[String]
    var current_selector: String

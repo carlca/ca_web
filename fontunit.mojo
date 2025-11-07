@@ -1,4 +1,4 @@
-@value
+@fieldwise_init
 struct FontUnit:
    var value: String
 

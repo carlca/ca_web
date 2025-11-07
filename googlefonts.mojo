@@ -1,4 +1,4 @@
-@value
+@fieldwise_init
 struct GoogleFonts:
    var _value: String
    var google_fonts: List[String]

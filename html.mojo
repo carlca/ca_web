@@ -3,7 +3,7 @@ from style import Style
 from alignment import Alignment
 from script import Script
 
-@value
+@fieldwise_init
 struct Html(Copyable, Stringable, Writable):
    var default_cell_height: Int
    var lines: List[String]
@@ -27,7 +27,7 @@ struct Html(Copyable, Stringable, Writable):
       self.default_cell_height = existing.default_cell_height
       self.lines = List[String]()
       for line in existing.lines:
-         self.lines.append(line[])
+         self.lines.append(line)
 
    fn get_alignment(self, align: Alignment) -> String:
       if align == Alignment.left:

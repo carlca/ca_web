@@ -1,7 +1,6 @@
 from collections.dict import Dict
 
-@value
-struct PostResponse():
+struct PostResponse(Copyable, Movable):
    var _raw_data: String
 
    fn __init__(out self):
